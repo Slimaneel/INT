@@ -1,0 +1,52 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^20.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^4.5.0",
+    "ckeditor4-react": "^1.1.1",
+    "html-react-parser": "^0.13.0",
+    "mathquill": "^0.10.1-a",
+    "mathquillloader": "^1.0.6",
+    "node-mathquill": "^0.10.2",
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.2.1",
+    "react-dom": "^16.13.1",
+    "react-froala-wysiwyg": "^3.2.0",
+    "react-mathjax2": "0.0.2",
+    "react-quill": "^2.0.0-beta.2",
+    "react-scripts": "3.4.1",
+    "react-summernote": "^2.0.2",
+    "suneditor-react": "^2.13.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "exports-loader": "^1.1.0",
+    "imports-loader": "^1.1.0"
+  }
+}

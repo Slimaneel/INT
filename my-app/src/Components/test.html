@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="http://mathquill.com/lib/mathquill.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://mathquill.com/lib/mathquill.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+
+
+<p>Type math here: <span id="math-field" ></span>
+
+        <div id="keyboard">
+          <div class="btn-group" role="group" aria-label="math functions">
+            <button type="button" class="btn btn-default" onClick='input("\\sqrt")'>√</button>
+            <button type="button" class="btn btn-default" onClick= 'input("/")'>/</button>
+          </div>
+        </div>
+   
+
+
+<script>
+    var mathFieldSpan = document.getElementById('math-field');
+    var MQ = MathQuill.getInterface(2);
+    var mathField = MQ.MathField(mathFieldSpan, {
+     spaceBehavesLikeTab: true,
+     handlers: {
+       edit: function() {
+         mathField.focus()
+       }
+     }
+});
+
+function input(str) {
+     mathField.cmd(str)
+     mathField.focus()
+}
+   
+</script>
