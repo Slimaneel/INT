@@ -10,23 +10,24 @@ import { Link } from 'react-router-dom';
 
 function Exercise () {
   
+  const [value, setValue] = useState ("")
   const [text, setText] = useState("")
   const [files, setFiles] = useState([])
   const [inputFields, setInputFields] = useState([
-    {Solution:""}
-  ]);
+    {Solution:""}]
+  );
   const [count, setCount] = useState (
-    [{Hint:""}
-  ]);
-
+    [{Hint:""}]
+  );
   const onEditorChange = (value) => {
-      setText(value)
-      console.log(text)
-  }
+    setText(value)
+    console.log(text)
+}
 
-  const onFilesChange = (files) => {
-      setFiles(files)
-  }
+const onFilesChange = (files) => {
+    setFiles(files)
+}
+
   const handleChangeSolution = (index, event) => {
     const values = [...inputFields];
       values[index].Solution = event.target.value;
@@ -41,6 +42,7 @@ function Exercise () {
 
     setCount(values);
   };
+  const handleChangeTitle = (event) => setValue(event.target.value);
 
   const handleAddSolution = () => {
     const values = [...inputFields];
@@ -68,15 +70,13 @@ function Exercise () {
   const handleSubmit = event => {
     event.preventDefault();
     
-  
-    
     const exercises = {
      
       InstructionField: text,
       Solution: inputFields,
       Hint: count
     }
-    console.log(exercises);
+  
 
     axios.post('http://localhost:1000/exercises/add', exercises)
     .then(res => console.log(res.data));
@@ -92,6 +92,9 @@ function Exercise () {
     
     <div className="Exercise">
     <form onSubmit={handleSubmit}>
+   
+ 
+      
       <div className="editor">
         <p>Instruction Field</p>
         <CKEditor 
@@ -146,7 +149,7 @@ function Exercise () {
               <label>Hint</label>
               <input type="text"
                   className="form-control"
-                  value={inputFields.Hint} 
+                  value={counts.Hint} 
                   id="hint"
                   onChange={event => handleChangeHint(index, event)}
               />
@@ -174,4 +177,3 @@ function Exercise () {
 }
 
 export default Exercise;
-

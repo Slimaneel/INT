@@ -86,7 +86,7 @@ export default class ViewExercise extends Component {
          
         </div>
         <div className="form-group">
-          <label>Skill Collection:</label>
+          <label>Skill Category:</label>
             
           <textarea 
               type="text" 

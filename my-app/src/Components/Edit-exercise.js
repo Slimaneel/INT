@@ -1,155 +1,187 @@
-import React, { Component } from 'react';
+import React, { useState, Fragment, useEffect} from 'react';
 import MathJax from "react-mathjax2";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import parse from "html-react-parser";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-export default class EditExercise extends Component {
-  constructor(props) {
-    super(props);
+function EditExercise (props) {
+ 
+  const [text, setText] = useState("")
+  const [files, setFiles] = useState([])
+  const [inputFields, setInputFields] = useState([
+    {Solution:""}
+  ]);
+  const [count, setCount] = useState (
+    [{Hint:""}
+  ]);
 
-    this.onChangeInstructionField = this.onChangeInstructionField.bind(this);
-    this.onChangeSolution = this.onChangeSolution.bind(this);
-    this.onChangeHint = this.onChangeHint.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-
-    this.state = {
-      InstructionField: '',
-      Solution: '',
-      Hint: "",
-      Tasks: [],
-      Lists: []
-      
-    }
+  const onEditorChange = (value) => {
+      setText(value)
+      console.log(text)
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:1000/exercises/'+this.props.match.params.id)
+  const onFilesChange = (files) => {
+      setFiles(files)
+  }
+  const handleChangeSolution = (index, event) => {
+    const values = [...inputFields];
+      values[index].Solution = event.target.value;
+    
+
+    setInputFields(values);
+  };
+  const handleChangeHint = (index, event) => {
+    const values = [...count];
+      values[index].Hint = event.target.value;
+    
+
+    setCount(values);
+  };
+
+  const handleAddSolution = () => {
+    const values = [...inputFields];
+    values.push({ Solution: '' });
+    setInputFields(values);
+  };
+
+  const handleRemoveSolution = index => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
+  };
+  const handleAddHint = () => {
+    const values = [...count];
+    values.push({ Hint: '' });
+    setCount(values);
+  };
+
+  const handleRemoveHint = index => {
+    const values = [...count];
+    values.splice(index, 1);
+    setCount(values);
+  };
+
+  useEffect(() => {
+    axios.get('http://localhost:1000/exercises/'+props.match.params.id)
       .then(response => {
         console.log(response.data)
-        this.setState({
-          InstructionField: response.data.InstructionField,
-          Solution: response.data.Solution,
+        setText({
+          InstructionField: response.data.InstructionField
+          
+        })
+        setInputFields({
+          Solution: response.data.Solution
+        })
+        setCount({
           Hint: response.data.Hint
         })
       })
-      .catch(function () {
-        console.log(Error);
+      .catch(function (error) {
+        console.log(error);
       })
 
-  }
+  });
 
-  onChangeInstructionField(event) {
-    this.setState({
-      InstructionField: event.target.value
-    })
-  }
-
-  onChangeSolution(event) {
-    this.setState({
-      Solution: event.target.value
-    })
-  }
-
-  onChangeHint(event) {
-    this.setState({
-      Hint: event.target.value
-    })
-  }
-
-  handleSolution = () => {
-    this.setState(state => ({
-      Tasks: [...state.Tasks, state.Solution],
-      Solution: ""
-    }))
-  }
-
-  handleHint = () => {
-    this.setState(state => ({
-      Lists: [...state.Lists, state.Hint],
-      Hint: ""
-    }))
-  }
-  
-
-  onSubmit(event) {
+  const handleSubmit = event => {
     event.preventDefault();
 
     const exercise = {
-      IntructionField: this.state.InstructionField,
-      Solution: this.state.Solution,
-      Hint: this.state.Hint
+      InstructionField: text,
+      Solution: inputFields,
+      Hint: count
     }
 
     console.log(exercise);
 
-    axios.post('http://localhost:1000/exercises/update/'+this.props.match.params.id, exercise)
+    axios.post('http://localhost:1000/exercises/update/'+props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+   
   }
 
-  render() {
+  
     return (
-    <div>
-      <h3>Edit Exercise</h3>
-      <form onSubmit={this.onSubmit}>
-        <div className="form-group"> 
-          <label>InstructionField: </label>
-          <textarea  type="text"
-              required
-              className="form-control"
-              value={this.state.InstructionField}
-              onChange={this.onChangeInstructionField}>
-              
-          </textarea>
-        </div>
-        <div className="form-group">
-              <br></br>
-              
-                <MathJax.Context input="tex">
-                <MathJax.Text text={this.state.InstructionField} />
-                </MathJax.Context>
-            </div>
-        <div className="form-group"> 
-          <label>Solution: </label>
-            <ul>
-                {this.state.Tasks.map((task) => 
-                <li>{task}</li>
-                )}
-            </ul>
-          <textarea  type="text"
-              required
-              className="form-control"
-              value={this.state.Solution}
-              onChange={this.onChangeSolution}
-              />
-          <button onClick = {this.handleSolution} >Add Solution</button>
+      <div className="Exercise">
+      <form onSubmit={handleSubmit}>
+        <div className="editor">
+          <p>Instruction Field</p>
+          <CKEditor 
+            placeholder="start typing"
+         
+            editor={ClassicEditor}
+            data={text}
+            onChange={(event, editor) => {
+              const data = editor.getData()
+              setText(data)
+            }}
+          >
+  
+          </CKEditor >
+          </div>
+          <div>
+  
           <br></br>
-          <label> Is the solution correct? <input required type="checkbox" value="Correct?"></input> </label>
+          
+  
+          <p> <MathJax.Context>
+                  <MathJax.Text text={parse(text)} />
+                  </MathJax.Context></p>
+          
         </div>
-        <div className="form-group">
-          <label>Hint:</label>
-            <ul>
-              {this.state.Lists.map((task) => 
-                <li>{task}</li>
-              )}
-            </ul>
-          <input 
-              type="text" 
-              className="form-control"
-              value={this.state.Hint}
-              onChange={this.onChangeHint}
-              />
-          <button onClick = {this.handleHint}>Add Hint</button>
+        <div>
+      
+          {inputFields.map((inputField, index) => (
+            <Fragment key={`${inputField}~${index}`}>
+              <div>
+                <label>Solution</label>
+                <input  type="text"
+                    className="form-control"
+                    id="solution"
+                    value={inputField.Solution} 
+                    onChange={event => handleChangeSolution(index, event)}
+                />
+              </div>
+              <div>
+             
+                <button className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
+                <button className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
+                
+              </div>
+            </Fragment>
+            
+            
+          ))}
+          {count.map((counts, index) => (
+            <Fragment key={`${counts}~${index}`}>
+               <div>
+                <label>Hint</label>
+                <input type="text"
+                    className="form-control"
+                    value={counts.Hint} 
+                    id="hint"
+                    onChange={event => handleChangeHint(index, event)}
+                />
+                </div>
+                <div>
+              
+                <button className="btn btn-link" onClick={() => handleAddHint()}> +</button>
+                <button className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
+                
+              </div>
+            </Fragment>
+          ))}
+  
         </div>
-
-        <div className="form-group">
-          <input type="submit" value="Edit Exercise" className="btn btn-primary" />
+        <div className="submit-button">
+            <button className="btn btn-primary mr-2" onSubmit={handleSubmit}> Submit </button>
+            <Link className="btn btn-primary" Link to={'/'}>Cancel</Link> 
         </div>
-        <Link className="btn btn-primary" Link to={'/'}>Cancel</Link> 
+  
       </form>
-    </div>
+      </div>
     )
-  }
+  
 }
-
+export default EditExercise;

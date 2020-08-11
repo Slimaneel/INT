@@ -11,8 +11,8 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
     const InstructionField = req.body.InstructionField;
-    const Solution = Array(req.body.Solution);
-    const Hint = Array(req.body.Hint);
+    const Solution = req.body.Solution;
+    const Hint = req.body.Hint;
 
     
     const newInstruction = new Exercise({
@@ -44,9 +44,9 @@ router.route('/update/:id').post((req, res) => {
     Exercise.findById(req.params.id)
     .then(exercise => {
         exercise.InstructionField = req.body.InstructionField;
-        exercise.Solution = Array(req.body.Solution);
-        exercise.Hint = Array(req.body.Hint);
-   
+        exercise.Solution = req.body.Solution;
+        exercise.Hint = req.body.Hint;
+
 
         exercise.save()
         .then(() => res.json('Exercise updated!'))

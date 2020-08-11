@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import ExerciseList from './Components/Exercise-list';
 import Exercise from './Components/Exercise';
-import EditExercise from './Components/Edit-exercise';
+import EditExercise from './Components/Edit-Exercise';
 import ViewExercise from './Components/view-exercise';
 
 

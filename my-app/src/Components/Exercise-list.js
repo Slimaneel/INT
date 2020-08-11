@@ -6,12 +6,14 @@ import axios from 'axios';
 
 export default class ExerciseList extends Component {
   constructor(props) {
+  
     super(props);
 
     this.deleteExercise = this.deleteExercise.bind(this)
 
     this.state = {exercises: []};
   }
+   
 
   componentDidMount() {
     axios.get('http://localhost:1000/exercises/')
@@ -37,6 +39,11 @@ export default class ExerciseList extends Component {
       return <Exercise instruction={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
     })
   }
+  list(){
+    return this.state.exercises.Solution.map(function (obj) {
+      return obj.Solution;
+    })
+  }
 
   render() {
     return (
@@ -60,13 +67,18 @@ export default class ExerciseList extends Component {
     )
   }
 }
+
+
 const Exercise = props => (
+  
     <tr>
       <td>{props.instruction.InstructionField}</td>
-      <td>{props.instruction.Solution.map(solution => {solution})}</td>
-      <td>{props.instruction.Hint}</td>
+      
+      
+      
       <td>
         <Link to={'/edit/'+props.instruction._id}>edit</Link> | <a href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>delete</a> 
       </td>
     </tr>
+  
 );
