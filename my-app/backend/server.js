@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require ('cors');
 const mongoose = require ('mongoose');
+const multiparty = require('connect-multiparty');
+const multipartyMiddleware = multiparty({uploadDir:'./images'});
 
 require('dotenv').config();
 
@@ -23,6 +25,10 @@ const skillRouter = require('./routes/skills');
 
 app.use('/exercises', instructionRouter);
 app.use('/skills', skillRouter);
+
+app.post('/uploads', multipartyMiddleware, (req, res)=>{
+    console.log(req.files.upload);
+})
 
 app.listen (port, () => {
     console.log (`Server is running on port: ${port}`);

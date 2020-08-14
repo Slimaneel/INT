@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^20.0.0",
+    "@ckeditor/ckeditor5-ckfinder": "^21.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -21,6 +22,7 @@
     "react-mathjax2": "0.0.2",
     "react-quill": "^2.0.0-beta.2",
     "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
     "react-summernote": "^2.0.2",
     "suneditor-react": "^2.13.1"
   },

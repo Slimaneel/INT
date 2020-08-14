@@ -3,10 +3,12 @@ import React, { useState, Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import MathJax from "react-mathjax2";
 import parse from "html-react-parser";
+
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import Dropdown  from './Dropdown';
 
 function Exercise () {
   
@@ -19,14 +21,7 @@ function Exercise () {
   const [count, setCount] = useState (
     [{Hint:""}]
   );
-  const onEditorChange = (value) => {
-    setText(value)
-    console.log(text)
-}
 
-const onFilesChange = (files) => {
-    setFiles(files)
-}
 
   const handleChangeSolution = (index, event) => {
     const values = [...inputFields];
@@ -73,10 +68,11 @@ const onFilesChange = (files) => {
     const exercises = {
      
       InstructionField: text,
-      Solution: inputFields,
-      Hint: count
+      Solution: inputFields.filter(field => field.Solution),
+      Hint: count.filter(count => count.Hint),
+      Title: value
     }
-  
+    console.log(exercises);
 
     axios.post('http://localhost:1000/exercises/add', exercises)
     .then(res => console.log(res.data));
@@ -93,7 +89,25 @@ const onFilesChange = (files) => {
     <div className="Exercise">
     <form onSubmit={handleSubmit}>
    
- 
+    <div>
+      <h3 style={{textAlign:"center"}}>Create Exercise</h3>
+          <Fragment >
+            <div>
+              <label>Title</label>
+              <input  type="text"
+                  className="form-control"
+                  id="title"
+                  value={value} 
+                  onChange={event => handleChangeTitle(event)}
+              />
+            </div>
+  
+          </Fragment>
+          </div>
+          <br></br>
+          
+          <Dropdown />
+          <br></br>
       
       <div className="editor">
         <p>Instruction Field</p>
@@ -102,6 +116,13 @@ const onFilesChange = (files) => {
        
           editor={ClassicEditor}
           data={text}
+          config={
+            {
+              ckfinder:{
+                uploadUrl:'/uploads'
+              }
+            } 
+          }
           onChange={(event, editor) => {
             const data = editor.getData()
             setText(data)
@@ -126,17 +147,28 @@ const onFilesChange = (files) => {
           <Fragment key={`${inputField}~${index}`}>
             <div>
               <label>Solution</label>
-              <input  type="text"
+              <input  
+                required
+                type="text"
                   className="form-control"
                   id="solution"
                   value={inputField.Solution} 
                   onChange={event => handleChangeSolution(index, event)}
               />
+              <label>
+              <input 
+                required
+                type="checkbox" 
+               
+                
+              />
+                Check to confirm the solution
+              </label>
             </div>
             <div>
            
-              <button className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
-              <button className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
+              <button type = "button" className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
+              <button type = "button" className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
               
             </div>
           </Fragment>
@@ -156,8 +188,8 @@ const onFilesChange = (files) => {
               </div>
               <div>
             
-              <button className="btn btn-link" onClick={() => handleAddHint()}> +</button>
-              <button className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
+              <button type = "button" className="btn btn-link" onClick={() => handleAddHint()}> +</button>
+              <button type = "button" className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
               
             </div>
           </Fragment>

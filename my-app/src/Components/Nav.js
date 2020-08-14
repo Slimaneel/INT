@@ -16,6 +16,7 @@ export default class Nav extends Component{
                     <li className='navrbar-item'> 
                         <Link to='/skills' className='nav-link'>add skill</Link>
                     </li>
+                   
                     
                 </ul>
             </div>

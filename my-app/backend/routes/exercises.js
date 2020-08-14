@@ -9,13 +9,16 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
 router.route('/add').post((req, res) => {
+    const Title = req.body.Title;
     const InstructionField = req.body.InstructionField;
     const Solution = req.body.Solution;
     const Hint = req.body.Hint;
 
     
     const newInstruction = new Exercise({
+        Title,
         InstructionField,
         Solution, 
         Hint,
@@ -43,6 +46,7 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Exercise.findById(req.params.id)
     .then(exercise => {
+        exercise.Title = req.body.Title;
         exercise.InstructionField = req.body.InstructionField;
         exercise.Solution = req.body.Solution;
         exercise.Hint = req.body.Hint;

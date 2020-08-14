@@ -8,37 +8,29 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function EditExercise (props) {
  
+  const [value, setValue] = useState ("")
   const [text, setText] = useState("")
-  const [files, setFiles] = useState([])
   const [inputFields, setInputFields] = useState([
     {Solution:""}
   ]);
-  const [count, setCount] = useState (
-    [{Hint:""}
+  const [count, setCount] = useState ([
+      {Hint:""}
   ]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const onEditorChange = (value) => {
-      setText(value)
-      console.log(text)
-  }
 
-  const onFilesChange = (files) => {
-      setFiles(files)
-  }
   const handleChangeSolution = (index, event) => {
     const values = [...inputFields];
       values[index].Solution = event.target.value;
-    
-
     setInputFields(values);
   };
+
   const handleChangeHint = (index, event) => {
     const values = [...count];
       values[index].Hint = event.target.value;
-    
-
     setCount(values);
   };
+  const handleChangeTitle = (event) => setValue(event.target.value);
 
   const handleAddSolution = () => {
     const values = [...inputFields];
@@ -67,27 +59,23 @@ function EditExercise (props) {
     axios.get('http://localhost:1000/exercises/'+props.match.params.id)
       .then(response => {
         console.log(response.data)
-        setText({
-          InstructionField: response.data.InstructionField
-          
-        })
-        setInputFields({
-          Solution: response.data.Solution
-        })
-        setCount({
-          Hint: response.data.Hint
-        })
+        setValue(response.data.Title)
+        setText(response.data.InstructionField)
+        setInputFields(response.data.Solution)
+        setCount(response.data.Hint)
+        setIsLoading(false);
       })
       .catch(function (error) {
         console.log(error);
       })
 
-  });
+  }, []);
 
   const handleSubmit = event => {
     event.preventDefault();
 
     const exercise = {
+      Title: value,
       InstructionField: text,
       Solution: inputFields,
       Hint: count
@@ -103,8 +91,25 @@ function EditExercise (props) {
 
   
     return (
+      <>
+      { isLoading ? <p>Loading...</p> : (
       <div className="Exercise">
       <form onSubmit={handleSubmit}>
+      <div>
+          <Fragment >
+            <div>
+              <label>Title</label>
+              <input  type="text"
+                  className="form-control"
+                  id="title"
+                  value={value} 
+                  onChange={event => handleChangeTitle(event)}
+              />
+            </div>
+  
+          </Fragment>
+          </div>
+          <br></br>
         <div className="editor">
           <p>Instruction Field</p>
           <CKEditor 
@@ -136,7 +141,9 @@ function EditExercise (props) {
             <Fragment key={`${inputField}~${index}`}>
               <div>
                 <label>Solution</label>
-                <input  type="text"
+                <input 
+                
+                  type="text"
                     className="form-control"
                     id="solution"
                     value={inputField.Solution} 
@@ -145,8 +152,8 @@ function EditExercise (props) {
               </div>
               <div>
              
-                <button className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
-                <button className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
+                <button type = "button" className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
+                <button type = "button" className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
                 
               </div>
             </Fragment>
@@ -166,8 +173,8 @@ function EditExercise (props) {
                 </div>
                 <div>
               
-                <button className="btn btn-link" onClick={() => handleAddHint()}> +</button>
-                <button className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
+                <button type = "button" className="btn btn-link" onClick={() => handleAddHint()}> +</button>
+                <button type = "button" className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
                 
               </div>
             </Fragment>
@@ -181,6 +188,8 @@ function EditExercise (props) {
   
       </form>
       </div>
+    )}
+    </>
     )
   
 }

@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ExerciseList from './Components/Exercise-list';
 import Exercise from './Components/Exercise';
 import EditExercise from './Components/Edit-Exercise';
+import Skill from './Components/skill';
 import ViewExercise from './Components/view-exercise';
 
 
@@ -19,7 +20,9 @@ function App() {
         <Route path='/' exact component={ExerciseList} />
         <Route path='/exercise' component={Exercise} />
         <Route path='/edit/:id' component={EditExercise} />
-        <Route path='/skills' component={ViewExercise} />
+        <Route path='/skills' component={Skill} />
+        <Route path='/view/:id' component={ViewExercise} />
+        
         
       </Switch>
       </div>

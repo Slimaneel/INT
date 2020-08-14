@@ -25,6 +25,7 @@ export default class ExerciseList extends Component {
       })
   }
 
+
   deleteExercise(id) {
     axios.delete('http://localhost:1000/exercises/'+id)
       .then(response => { console.log(response.data)});
@@ -34,16 +35,13 @@ export default class ExerciseList extends Component {
     })
   }
   
+  
   exerciseList() {
     return this.state.exercises.map(currentexercise => {
       return <Exercise instruction={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
     })
   }
-  list(){
-    return this.state.exercises.Solution.map(function (obj) {
-      return obj.Solution;
-    })
-  }
+  
 
   render() {
     return (
@@ -53,9 +51,8 @@ export default class ExerciseList extends Component {
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th>InstructionField</th>
-              <th>Solution</th>
-              <th>Hint</th>
+              <th>Title</th>
+              
               
             </tr>
           </thead>
@@ -72,12 +69,12 @@ export default class ExerciseList extends Component {
 const Exercise = props => (
   
     <tr>
-      <td>{props.instruction.InstructionField}</td>
+      <td>{props.instruction.Title}</td>
       
       
       
       <td>
-        <Link to={'/edit/'+props.instruction._id}>edit</Link> | <a href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>delete</a> 
+        <Link to={'/edit/'+props.instruction._id}>edit</Link> | <a href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>delete</a> | <Link to={'/view/'+props.instruction._id}>view</Link>
       </td>
     </tr>
   
