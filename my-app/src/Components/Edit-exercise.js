@@ -5,6 +5,7 @@ import axios from 'axios';
 import parse from "html-react-parser";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Dropdown  from './Dropdown';
 
 function EditExercise (props) {
  
@@ -17,17 +18,18 @@ function EditExercise (props) {
       {Hint:""}
   ]);
   const [isLoading, setIsLoading] = useState(true);
+  const[name, setName]=useState([])
 
 
   const handleChangeSolution = (index, event) => {
     const values = [...inputFields];
-      values[index].Solution = event.target.value;
+    values[index].Solution = event.target.value;
     setInputFields(values);
   };
 
   const handleChangeHint = (index, event) => {
     const values = [...count];
-      values[index].Hint = event.target.value;
+    values[index].Hint = event.target.value;
     setCount(values);
   };
   const handleChangeTitle = (event) => setValue(event.target.value);
@@ -71,6 +73,8 @@ function EditExercise (props) {
 
   }, []);
 
+
+
   const handleSubmit = event => {
     event.preventDefault();
 
@@ -86,7 +90,7 @@ function EditExercise (props) {
     axios.post('http://localhost:1000/exercises/update/'+props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
-   
+      window.location ="/list";
   }
 
   
@@ -96,7 +100,9 @@ function EditExercise (props) {
       <div className="Exercise">
       <form onSubmit={handleSubmit}>
       <div>
+        <h3 style={{textAlign:"center"}}>Edit Exercise</h3> 
           <Fragment >
+
             <div>
               <label>Title</label>
               <input  type="text"
@@ -110,6 +116,9 @@ function EditExercise (props) {
           </Fragment>
           </div>
           <br></br>
+
+         
+
         <div className="editor">
           <p>Instruction Field</p>
           <CKEditor 
@@ -173,8 +182,8 @@ function EditExercise (props) {
                 </div>
                 <div>
               
-                <button type = "button" className="btn btn-link" onClick={() => handleAddHint()}> +</button>
-                <button type = "button" className="btn btn-link" onClick={() => handleRemoveHint(index)}> - </button>
+                <button type = "button" className="btn btn-link " onClick={() => handleAddHint()}> +</button>
+                <button type = "button" className="btn btn-link " onClick={() => handleRemoveHint(index)}> - </button>
                 
               </div>
             </Fragment>
@@ -183,7 +192,7 @@ function EditExercise (props) {
         </div>
         <div className="submit-button">
             <button className="btn btn-primary mr-2" onSubmit={handleSubmit}> Submit </button>
-            <Link className="btn btn-primary" Link to={'/'}>Cancel</Link> 
+            <Link className="btn btn-primary" Link to={'/list'}>Cancel</Link> 
         </div>
   
       </form>

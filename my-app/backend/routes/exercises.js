@@ -15,6 +15,7 @@ router.route('/add').post((req, res) => {
     const InstructionField = req.body.InstructionField;
     const Solution = req.body.Solution;
     const Hint = req.body.Hint;
+ 
 
     
     const newInstruction = new Exercise({
@@ -22,6 +23,7 @@ router.route('/add').post((req, res) => {
         InstructionField,
         Solution, 
         Hint,
+        
        
         
     });
@@ -32,7 +34,7 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-    Exercise.findById(req.params.id)
+     (Exercise.findById(req.params.id))
     .then(exercise => res.json(exercise))
     .catch(err => res.status(400).json('Error: ' + err));
 });

@@ -1,0 +1,114 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .body{
+    background: url('../img/skill-bg.jpg') no-repeat top center;
+    background-size: cover;
+    
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 35rem;
+  }
+  .wrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 550px;
+    background:#343A40;
+    opacity:0.85;
+    
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+  
+  .wrapper  h3{
+    color: #e2f3fa;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  
+  .contact-form{
+    display: flex;
+  }
+  
+  .input-fields{
+    display: flex;
+    flex-direction: column;
+    margin-right: 4%;
+    
+  }
+  .label-fields{
+    color: #e2f3fa;
+  }
+ 
+  
+  .input-fields .input{
+    margin: 10px 0;
+    background: transparent;
+    border: 0px;
+    border-bottom: 2px solid #e2f3fa;
+    padding: 10px;
+    color: #c5ecfd;
+    width: 100%;
+    margin-top:-2rem;
+    margin-bottom:3.5rem;
+  }
+  
+ 
+  .btn-skill {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn-skill{
+    box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+    padding: 1.02rem 1.75rem;
+    font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 80%;
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
+    border: 0;
+    
+  }
+.btn-skill-primary {
+    color: #fff;
+    background-color: #64a19d;
+    border-color: #64a19d;
+  }
+  .btn-skill:hover {
+    color: #fff;
+    background-color: #548b87;
+   
+  }
+  .input:focus{
+      
+    outline:none;
+    font-size:15px;
+    margin-top:-10px;
+    color:white;
+    
+   border-bottom: 2px solid #158be8;
+  }
+  

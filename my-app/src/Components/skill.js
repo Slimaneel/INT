@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './skill.css';
 
 
 
@@ -60,49 +61,49 @@ export default class Skill extends Component {
 
   render() {
     return (
-      <div>
+      <body className="body" >
+      <div className="wrapper">
       <h3 style={{textAlign:"center"}}>Add Skill</h3>
       <form onSubmit={this.onSubmit}>
-        <div className="form-group"> 
-          <label>Skill code: </label>
-          <input type="text"
-              required
-              className="form-control"
-              value={this.state.Code}
-              onChange={this.onChangeSkillCode}/>
+        <div className="contact-form"> 
+          <div className="input-fields">
+            <label className="label-fields">Skill Code </label>
+            <input type="text"
+             
+                className="input"
+                value={this.state.Code}
+                onChange={this.onChangeSkillCode}/>
               
+        
+            <label className="label-fields">Skill Name </label>
           
-        </div>
-      
-        <div className="form-group"> 
-          <label>Skill Name: </label>
-         
-          <textarea  type="text"
-              required
-              className="form-control"
-              value={this.state.Name}
-              onChange={this.onChangeSkillName}
-              />
-         
-        </div>
-        <div className="form-group">
-          <label>Skill Category:</label>
-            
-          <textarea 
-              type="text" 
-              className="form-control"
-              value={this.state.Category}
-              onChange={this.onChangeSkillCategory}
-          />
+            <input type="text"
+                
+                className="input"
+                value={this.state.Name}
+                onChange={this.onChangeSkillName}
+                />
+          
+          
+            <label className="label-fields">Skill Category</label>
+              
+            <input 
+                type="text" 
+                className="input"
+                value={this.state.Category}
+                onChange={this.onChangeSkillCategory}
+            />
+          </div>
           
         </div>
 
-        <div className="submit-button">
-          <input type="submit" value="Add Skill" className="btn btn-primary mr-2" />
-          <Link className="btn btn-primary" Link to={'/'}>Cancel</Link> 
+        <div >
+          <input type="submit" value="Add Skill" className="btn-skill btn-skill-primary mr-2" />
+          <button className="btn-skill btn-skill-primary" Link to={'/list'}>Cancel</button> 
         </div>
       </form>
     </div>
+    </body>
     )
   }
 }

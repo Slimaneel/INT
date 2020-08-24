@@ -1,0 +1,18 @@
+.view {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 35rem;
+    
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.863) 0%, rgba(141, 140, 140, 0.8) 50%),url("../img/view-bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+}
+
+.pdd{
+    width: 100%;
+    top:30px;
+    margin-top: 0px;
+}

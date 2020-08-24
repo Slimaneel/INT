@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+a:hover {
+    color: #467370;
+    text-decoration: underline;
+}
+.fixedTop {
+overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 20px 10px; /* Large padding which will shrink on scroll (using JS) */
+  transition: 0.4s; /* Adds a transition effect when the padding is decreased */
+  position: fixed; /* Sticky/fixed navbar */
+  width: 100%;
+  top: 0; /* At the top */
+  z-index: 99;
+  }
+  
+  .container {
+    
+    width: 100%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+.Img {
+    width: 10%;
+}
+
+  .navbar-toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+  .navbar-light .navbar-toggler {
+    color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .navbar-collapse {
+    flex-basis: 100%;
+    flex-grow: 1;
+    align-items: center;
+  }
+  #mainNav {
+    min-height: 3.5rem;
+    background-color: #fff;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    text-align:center;
+    margin-left:320px;
+  }
+  
+   .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+   
+  }
+  .brand {
+    display: inline-block;
+    margin: 0;
+    line-height: 1em;
+    font-family: "FireGo typeface";
+    
+    font-size: 25px;
+    background: linear-gradient(to right, #000000 50%, #25bd17 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+ 

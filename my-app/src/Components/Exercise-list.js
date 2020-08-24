@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import './Exercise-list.css';
 
 
 export default class ExerciseList extends Component {
@@ -11,7 +11,11 @@ export default class ExerciseList extends Component {
 
     this.deleteExercise = this.deleteExercise.bind(this)
 
-    this.state = {exercises: []};
+    this.state = {
+      exercises: [],
+      count:1
+                  
+    };
   }
    
 
@@ -38,44 +42,60 @@ export default class ExerciseList extends Component {
   
   exerciseList() {
     return this.state.exercises.map(currentexercise => {
-      return <Exercise instruction={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
+      return <Exercise instruction={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} count={this.state.count++}/>;
     })
+   
   }
   
 
   render() {
     return (
+      <section>
       <div>
-        <h3 style ={{textAlign: "center"}}>Added Exercises</h3>
-        <hr></hr>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
+      <br></br>
+        <br></br><br></br>
+    
+  
+  
+        
+        <body > 
+        <table className="table table-hover table-dark">
+          <thead>
+            <tr >
+            <th>#</th>
               <th>Title</th>
               
-              
+            
             </tr>
           </thead>
-          <tbody>
+          
+          <tbody >
             {this.exerciseList() }
+            
           </tbody>
         </table>
+        </body>
       </div>
+      </section>
     )
   }
 }
 
 
 const Exercise = props => (
+
   
+
     <tr>
+      <td>{props.count}</td>
       <td>{props.instruction.Title}</td>
       
+      <td><Link className="btnx" Link to={'/Exercise'}>Add</Link> | <Link className="btnx" to={'/edit/'+props.instruction._id}>Edit</Link > | <a className="btnx" href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>Delete</a> | <Link className="btnx" to={'/view/'+props.instruction._id}>View</Link></td>
+        
+        
+        
       
-      
-      <td>
-        <Link to={'/edit/'+props.instruction._id}>edit</Link> | <a href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>delete</a> | <Link to={'/view/'+props.instruction._id}>view</Link>
-      </td>
-    </tr>
+      </tr>
+  
   
 );
