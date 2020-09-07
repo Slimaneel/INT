@@ -1,4 +1,15 @@
+.header{
+  background-color:rgba(196, 196, 196, 0.377);
 
+    
+    
+    min-height: 35rem;
+    
+   
+   
+  
+    
+}
 
 
 table{
@@ -21,9 +32,6 @@ td {
       font-size: 1.4rem;
       padding-right: 10px;
       display: block;
-    }
-    tbody{
-        color:white;
     }
     
   

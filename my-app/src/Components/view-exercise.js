@@ -2,40 +2,56 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import parse from "html-react-parser";
+import ReactHtmlParser from "react-html-parser";
 import MathJax from "react-mathjax2";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { store } from 'react-notifications-component';
+import {Button, Modal} from "react-bootstrap";
+import { addStyles, EditableMathField } from "react-mathquill";
+import ReactPlayer from "react-player";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './view-exercise.css';
 
+
+addStyles();
 function ViewExercise(props) {
 
     const [value, setValue] = useState ("")
     const [text, setText] = useState("")
-    const [inputFields, setInputFields] = useState([
-        {Solution:""}
-    ]);
-    const [count, setCount] = useState ([
-        {Hint:""}
-    ]);
+    const [latex, setLatex] = useState("");
+    const [hint, setHint] = useState ([]);
     const [click, setClick] = useState(0)
-    const [clicker, setClicker] = useState(0);
-    const [answer, setAnswer] = useState("")
+    const [answer, setAnswer] = useState ("")
     const [number, setNumber] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
-    const [currentHint, setCurrenthint] = useState("")
+    const [video, setVideo] = useState(true)
     const [currentSolution, setCurrentsolution] = useState("")
+    const[show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    const injectMathFunction = (latexString) => {
+      setAnswer((answer) => answer + latexString);
+    }
 
-    const handleChangeAnswer = (event) => setAnswer(event.target.value);
+  
     
     useEffect(() => {
         axios.get('http://localhost:1000/exercises/'+props.match.params.id)
           .then(response => {
+            const hiddenHints = response.data.Hint.map((hints) => {
+              hints.hidden = true;
+              return hints;
+            });
+           
             console.log(response.data)
             setValue(response.data.Title)
             setText(response.data.InstructionField)
-            setInputFields(response.data.Solution)
-            setCount(response.data.Hint)
+            setLatex(response.data.Solution)
+            setHint(hiddenHints);
           })
           .catch(function (error) {
             console.log(error);
@@ -43,8 +59,7 @@ function ViewExercise(props) {
     
       }, []);
      const CheckAnswer = () => {
-       if(!!inputFields.filter(answers => answers.Solution === answer).length){
-        console.log("djbsj");
+       if(latex === answer){
         setIsLoading(false);
         store.addNotification({
         title: "Success",
@@ -74,6 +89,7 @@ function ViewExercise(props) {
             })
         }else{
         setNumber(number + 1)
+        document.getElementById("hint").style.visibility = 'visible';  
         store.addNotification({
           title: "Wrong",
           message: "Wrong answer, try again!",
@@ -89,20 +105,26 @@ function ViewExercise(props) {
         }
       }
      }
+   
     
     //function shownexthint that shows the next hint until there are no more
     //once there are no more hints we return false
     //function showsolution shows the solution
     const ShowHint = () =>{
-      
-        if(click < count.length){
-         
-      
-      
-          setCurrenthint(count[click].Hint);
-          setClick(click+1);
-        }else {
+      if (click < hint.length) {
+        setClick(click + 1);
+        setHint((oldHints) => {
+          return oldHints.map((hints, index) => {
+            if (click === index) {
+              hints.hidden = false;
+            }
+            return hints;
+          });
+        });
+    
+      }else {
           document.getElementById("solution").style.visibility = 'visible';
+          document.getElementById("solution-label").style.visibility = 'visible';
          
           document.getElementById("hint").style.visibility = 'hidden';
   
@@ -123,17 +145,18 @@ function ViewExercise(props) {
     
     }
     const ShowSolution = ()=>{
-      setCurrentsolution(inputFields[clicker].Solution);
-      setClicker(clicker+1);
+      
+      setCurrentsolution(latex);
+    
+      document.getElementById("solution").style.visibility = 'hidden';
+      document.getElementById("solution-label").style.visibility = 'visible';
     }
     
-    
-
-   
 
     if(number > 2){
       return <Result />
     }
+ 
 
     
     return (
@@ -141,16 +164,25 @@ function ViewExercise(props) {
         <div className="view">
  
           <div style={{"color":"white"}} >
-            <h5 className="pdd" style={{textAlign:"center"}}>{value} </h5>
+            <h5 className="pdd" style={{"padding-top":"1.5rem"}}>{value} </h5>
           </div>
           <br></br>
           <div >
             
           </div>
           <div style={{textAlign:"center", "color":"white"}}>
-            <p> 
+        
+ 
+           
+           
+            <p>      
+                 
               <MathJax.Context>
-                <MathJax.Text text={parse(text)} />
+              
+                <MathJax.Text 
+                     
+                text={parse(text)} />
+               
               </MathJax.Context>
             </p>
             
@@ -158,32 +190,65 @@ function ViewExercise(props) {
           <div>
    
             <h5 style={{"color":"white"}}>Answer</h5>
-              <input
-              
-                type="text"
-             
-                value={answer}
-                onChange={event => handleChangeAnswer(event)}
+            <div >
+     
+              <EditableMathField  style={{"margin-left":"0.5rem","width":"20%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
+                onClick={()=> handleShow()}
+          
+                latex={answer} // latex value for the input field
+                onChange={(mathField) => {
+                  // called everytime the input changes
+                  setAnswer(mathField.latex());
+                }}
               />
+            
+              <Modal style={{"margin-top":"27rem", "width":"50%","margin-left":"3rem", "display":"inline"}} show={show} onHide={handleClose}>
+                <Modal.Body style={{"width":"100%"}}>
+                    <button className="button" onClick={() => injectMathFunction("\\sqrt{}")}>√</button>
+                    <button className="button" onClick={() => injectMathFunction("\\frac{}{}")}>/</button>
+                    <button className="button" onClick={() => injectMathFunction("\\cos")}>cos</button>
+                    <button className="button" onClick={() => injectMathFunction("\\sin")}>sin</button>
+                    <button className="button" onClick={() => injectMathFunction("\\tan")}>tan</button>
+                    <button className="button" onClick={() => injectMathFunction("\\lim_{}")}>lim</button>
+                    <button className="button" onClick={() => injectMathFunction("\\binom{}{}")}>bin</button>
+                    <button className="button" onClick={() => injectMathFunction("e^{}")}>e</button>
+                    <button className="button" onClick={() => injectMathFunction("x^{}")}>x^</button>
+                    <button className="button" onClick={() => injectMathFunction("\\int_{}")}>∫</button>
+                    <button className="button" onClick={() => injectMathFunction("+\\infty")}>+∞</button>
+                    <button className="button" onClick={() => injectMathFunction("-\\infty")}>-∞</button>
+                    <button className="button" onClick={() => injectMathFunction("\\sum_{}^{} ")}>Σ</button>
+                    <button className="button" onClick={() => injectMathFunction("\\pi ")}>pi</button>
+
+                </Modal.Body>
+                
+              </Modal>
+
+            </div>
               <ReactNotification />
             
-            <button  type="button"  className="btn btn-primary" onClick={CheckAnswer}>Check</button>  
+            <button  type="button"  className="btn btn-primary btn-check"onClick={CheckAnswer}>Check </button> 
+            <FontAwesomeIcon icon="check-square" /> 
             
           </div>
-          
-          <div>
+
+          <div style={{"padding-left":"10px", "color":"white"}}>
               
                 
                   <ul id="lasthint" >
-                    {currentHint}
+     
+                    {hint
+                      .filter((hints) => hints.hidden !== true)
+                      .map((hints) => (
+                        <li key={hints}>{hints.Hint}</li>
+                      ))}
+    
                   
                   </ul>  
-                  <button id="hint" className="btn btn-primary" onClick={ShowHint}>Show Hint</button>
-              
-              
-                  <ul if>
-                    
-                  {currentSolution} 
+                  <button id="hint" style={{visibility: 'hidden'}}  className="btn btn-primary" onClick={ShowHint}>Show Hint</button>
+ 
+     
+                  <ul>
+                    <label id="solution-label" style={{visibility: 'hidden'}}>Solution is: <EditableMathField latex={currentSolution} /> </label>
                   
                   </ul>
                   <button id="solution" style={{visibility: 'hidden'}} className="btn btn-primary" onClick={ShowSolution}>Show Solution</button>

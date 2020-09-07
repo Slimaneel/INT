@@ -7,7 +7,7 @@ class firstPage extends Component {
         return (
             <div className="masthead"> 
             <div className="containers align-items-center">
-                <div className="text-center color-block">
+                <div className="text-center-cover color-block">
             <h1 className="text-white-50 my-0 text-uppercase">Mathscan</h1>
             <br></br>
             <h2 className="text-white-40 mx-auto mt-2 mb-5">Your contribution will guide students towards excellence in mathematics</h2>

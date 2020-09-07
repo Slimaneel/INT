@@ -1,5 +1,5 @@
 .masthead {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: auto;
     min-height: 35rem;
@@ -48,7 +48,7 @@
 .mx-auto {
     margin-right: auto !important;
 }
-.text-center {
+.text-center-cover {
     text-align: center !important;
 }
 .color-block{

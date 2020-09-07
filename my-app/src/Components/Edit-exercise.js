@@ -5,56 +5,52 @@ import axios from 'axios';
 import parse from "html-react-parser";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import Dropdown  from './Dropdown';
+import Select from 'react-select';
+import {Button, Modal} from "react-bootstrap";
+import { addStyles, EditableMathField } from "react-mathquill";
 
+
+
+addStyles();
 function EditExercise (props) {
  
   const [value, setValue] = useState ("")
   const [text, setText] = useState("")
-  const [inputFields, setInputFields] = useState([
-    {Solution:""}
-  ]);
-  const [count, setCount] = useState ([
+  const [latex, setLatex] = useState("");
+  const[name, setName]=useState([])
+  const [hint, setHint] = useState ([
       {Hint:""}
   ]);
   const [isLoading, setIsLoading] = useState(true);
-  const[name, setName]=useState([])
+  const [currentskill, setCurrentskill] = useState("")
+  const[show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-
-  const handleChangeSolution = (index, event) => {
-    const values = [...inputFields];
-    values[index].Solution = event.target.value;
-    setInputFields(values);
-  };
+  const injectMathFunction = (latexString) => {
+    setLatex((latex) => latex + latexString);
+  }
 
   const handleChangeHint = (index, event) => {
-    const values = [...count];
+    const values = [...hint];
     values[index].Hint = event.target.value;
-    setCount(values);
+    setHint(values);
   };
-  const handleChangeTitle = (event) => setValue(event.target.value);
+  const handleChangeTitle = (event) => {
+    setValue(event.target.value);
+  }
 
-  const handleAddSolution = () => {
-    const values = [...inputFields];
-    values.push({ Solution: '' });
-    setInputFields(values);
-  };
 
-  const handleRemoveSolution = index => {
-    const values = [...inputFields];
-    values.splice(index, 1);
-    setInputFields(values);
-  };
   const handleAddHint = () => {
-    const values = [...count];
+    const values = [...hint];
     values.push({ Hint: '' });
-    setCount(values);
+    setHint(values);
   };
 
   const handleRemoveHint = index => {
-    const values = [...count];
+    const values = [...hint];
     values.splice(index, 1);
-    setCount(values);
+    setHint(values);
   };
 
   useEffect(() => {
@@ -63,8 +59,9 @@ function EditExercise (props) {
         console.log(response.data)
         setValue(response.data.Title)
         setText(response.data.InstructionField)
-        setInputFields(response.data.Solution)
-        setCount(response.data.Hint)
+        setLatex(response.data.Solution)
+        setCurrentskill(response.data.skill)
+        setHint(response.data.Hint)
         setIsLoading(false);
       })
       .catch(function (error) {
@@ -72,6 +69,19 @@ function EditExercise (props) {
       })
 
   }, []);
+  useEffect(() => {
+    axios.get('http://localhost:1000/skills/Name,_id')
+        .then(response => {
+            console.log(response.data)
+            setName(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+},[]);
 
 
 
@@ -81,8 +91,9 @@ function EditExercise (props) {
     const exercise = {
       Title: value,
       InstructionField: text,
-      Solution: inputFields,
-      Hint: count
+      Solution: latex,
+      Hint: hint,
+      skill: currentskill
     }
 
     console.log(exercise);
@@ -94,19 +105,22 @@ function EditExercise (props) {
   }
 
   
+
+  
     return (
       <>
       { isLoading ? <p>Loading...</p> : (
-      <div className="Exercise">
+      <div className="row">
+        <div className="text-center">
       <form onSubmit={handleSubmit}>
       <div>
-        <h3 style={{textAlign:"center"}}>Edit Exercise</h3> 
+
           <Fragment >
 
             <div>
-              <label>Title</label>
+              <label className="label">Title</label>
               <input  type="text"
-                  className="form-control"
+                  className="field"
                   id="title"
                   value={value} 
                   onChange={event => handleChangeTitle(event)}
@@ -116,13 +130,19 @@ function EditExercise (props) {
           </Fragment>
           </div>
           <br></br>
+          
+          <div className="menu">
+            <label className="label" >Skill Name</label>
+            <Select  onChange={(event) => setCurrentskill(event.value) } placeholder={currentskill.Name} options={name.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          <br></br>
 
          
 
-        <div className="editor">
-          <p>Instruction Field</p>
+        <div className="menuz">
+          <label className="label">Instruction Field</label>
           <CKEditor 
-            placeholder="start typing"
          
             editor={ClassicEditor}
             data={text}
@@ -133,69 +153,84 @@ function EditExercise (props) {
           >
   
           </CKEditor >
-          </div>
-          <div>
-  
-          <br></br>
-          
-  
-          <p> <MathJax.Context>
-                  <MathJax.Text text={parse(text)} />
-                  </MathJax.Context></p>
-          
         </div>
-        <div>
-      
-          {inputFields.map((inputField, index) => (
-            <Fragment key={`${inputField}~${index}`}>
+
+            <Fragment>
               <div>
-                <label>Solution</label>
-                <input 
-                
-                  type="text"
-                    className="form-control"
-                    id="solution"
-                    value={inputField.Solution} 
-                    onChange={event => handleChangeSolution(index, event)}
-                />
+                <label className="label" style={{"margin-left":"1rem"}}>Solution</label>
               </div>
               <div>
-             
-                <button type = "button" className="btn btn-link" onClick={() => handleAddSolution()}> + </button>
-                <button type = "button" className="btn btn-link" onClick={() => handleRemoveSolution(index)}> - </button>
-                
+                <EditableMathField  style={{"margin-left":"0.5rem","width":"50%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
+                  onClick={()=> handleShow()}
+            
+                  latex={latex} // latex value for the input field
+                  onChange={(mathField) => {
+                    // called everytime the input changes
+                    setLatex(mathField.latex());
+                  }}
+                />
+            
+                <Modal style={{"margin-top":"27rem", "width":"50%","margin-left":"3rem", "display":"inline"}} show={show} onHide={handleClose}>
+                  <Modal.Body style={{"width":"100%"}}>
+                      <button className="button" onClick={() => injectMathFunction("\\sqrt{}")}>√</button>
+                      <button className="button" onClick={() => injectMathFunction("\\frac{}{}")}>/</button>
+                      <button className="button" onClick={() => injectMathFunction("\\cos")}>cos</button>
+                      <button className="button" onClick={() => injectMathFunction("\\sin")}>sin</button>
+                      <button className="button" onClick={() => injectMathFunction("\\tan")}>tan</button>
+                      <button className="button" onClick={() => injectMathFunction("\\lim_{}")}>lim</button>
+                      <button className="button" onClick={() => injectMathFunction("\\binom{}{}")}>bin</button>
+                      <button className="button" onClick={() => injectMathFunction("e^{}")}>e</button>
+                      <button className="button" onClick={() => injectMathFunction("x^{}")}>x^</button>
+                      <button className="button" onClick={() => injectMathFunction("\\int_{}")}>∫</button>
+                      <button className="button" onClick={() => injectMathFunction("+\\infty")}>+∞</button>
+                      <button className="button" onClick={() => injectMathFunction("-\\infty")}>-∞</button>
+                      <button className="button" onClick={() => injectMathFunction("\\sum_{}^{} ")}>Σ</button>
+                      <button className="button" onClick={() => injectMathFunction("\\pi ")}>pi</button>
+
+                  </Modal.Body>
+                  
+                </Modal>
+      
               </div>
             </Fragment>
-            
-            
-          ))}
-          {count.map((counts, index) => (
-            <Fragment key={`${counts}~${index}`}>
+          {hint.map((hints, index) => (
+            <Fragment key={`${hints}~${index}`}>
                <div>
-                <label>Hint</label>
+                <label className="label" style={{"margin-top":"1rem"}}>Hint</label>
+              </div>
+              <div>
                 <input type="text"
-                    className="form-control"
-                    value={counts.Hint} 
+                    className="field"
+                    value={hints.Hint} 
                     id="hint"
                     onChange={event => handleChangeHint(index, event)}
                 />
+                  
                 </div>
-                <div>
-              
-                <button type = "button" className="btn btn-link " onClick={() => handleAddHint()}> +</button>
-                <button type = "button" className="btn btn-link " onClick={() => handleRemoveHint(index)}> - </button>
-                
-              </div>
+                <button type = "button" className="button" onClick={() => handleRemoveHint(index)}> - </button>
             </Fragment>
+            
           ))}
-  
-        </div>
-        <div className="submit-button">
-            <button className="btn btn-primary mr-2" onSubmit={handleSubmit}> Submit </button>
-            <Link className="btn btn-primary" Link to={'/list'}>Cancel</Link> 
+            
+              
+              <button type = "button" className="button " onClick={() => handleAddHint()}> +</button>
+            
+        <div className="margin">
+            <button className="link-button button" onSubmit={handleSubmit}> Submit </button>
+            <button className="link-button button" Link to={'/list'}> Cancel </button> 
         </div>
   
       </form>
+      </div>
+      <div className="display">
+
+      <h3 className="instr-view">Instruction field view</h3>
+
+        <label > <MathJax.Context>
+                <MathJax.Text text={parse(text)} />
+                </MathJax.Context></label>
+        
+      </div>
       </div>
     )}
     </>

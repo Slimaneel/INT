@@ -13,6 +13,7 @@ export default class ExerciseList extends Component {
 
     this.state = {
       exercises: [],
+      skills:[],
       count:1
                   
     };
@@ -23,6 +24,7 @@ export default class ExerciseList extends Component {
     axios.get('http://localhost:1000/exercises/')
       .then(response => {
         this.setState({ exercises: response.data })
+       
       })
       .catch((error) => {
         console.log(error);
@@ -32,17 +34,18 @@ export default class ExerciseList extends Component {
 
   deleteExercise(id) {
     axios.delete('http://localhost:1000/exercises/'+id)
-      .then(response => { console.log(response.data)});
-
+      .then(response => {console.log(response.data)});
+    
     this.setState({
       exercises: this.state.exercises.filter(el => el._id !== id)
     })
   }
-  
+
+
   
   exerciseList() {
     return this.state.exercises.map(currentexercise => {
-      return <Exercise instruction={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id} count={this.state.count++}/>;
+        return <Exercise instruction={currentexercise}  deleteExercise={this.deleteExercise} key={currentexercise._id} count={this.state.count++} />;
     })
    
   }
@@ -50,8 +53,8 @@ export default class ExerciseList extends Component {
 
   render() {
     return (
-      <section>
-      <div>
+      <section className="header">
+      <div className="header">
       <br></br>
         <br></br><br></br>
     
@@ -59,11 +62,12 @@ export default class ExerciseList extends Component {
   
         
         <body > 
-        <table className="table table-hover table-dark">
+        <table className="table table-hover table-dark ">
           <thead>
             <tr >
             <th>#</th>
               <th>Title</th>
+          
               
             
             </tr>
@@ -86,11 +90,12 @@ const Exercise = props => (
 
   
 
-    <tr>
+    <tr >
       <td>{props.count}</td>
       <td>{props.instruction.Title}</td>
+ 
       
-      <td><Link className="btnx" Link to={'/Exercise'}>Add</Link> | <Link className="btnx" to={'/edit/'+props.instruction._id}>Edit</Link > | <a className="btnx" href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>Delete</a> | <Link className="btnx" to={'/view/'+props.instruction._id}>View</Link></td>
+      <td><Link className="btnx" to={'/edit/'+props.instruction._id}>Edit</Link > | <a className="btnx" href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>Delete</a> | <Link className="btnx" to={'/view/'+props.instruction._id}>View</Link></td>
         
         
         

@@ -10,19 +10,21 @@ router.route('/').get((req, res) => {
 });
 
 
-router.route('/add').post((req, res) => {
+router.route('/add').post(async(req, res) => {
     const Title = req.body.Title;
     const InstructionField = req.body.InstructionField;
     const Solution = req.body.Solution;
     const Hint = req.body.Hint;
+    const skill = req.body.skill;
  
 
     
-    const newInstruction = new Exercise({
+    const  newInstruction = await  new Exercise({
         Title,
         InstructionField,
         Solution, 
         Hint,
+        skill,
         
        
         
@@ -33,8 +35,8 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').get((req, res) => {
-     (Exercise.findById(req.params.id))
+router.route('/:id').get(async(req, res) => {
+     await Exercise.findById(req.params.id).populate('skill')
     .then(exercise => res.json(exercise))
     .catch(err => res.status(400).json('Error: ' + err));
 });
