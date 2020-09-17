@@ -23,9 +23,15 @@ connection.once('open', () => {
 
 const instructionRouter = require ('./routes/exercises');
 const skillRouter = require('./routes/skills');
+const chapterRouter = require('./routes/chapter');
+const gradeRouter = require('./routes/grade');
+const programRouter = require('./routes/program');
 
 app.use('/exercises', instructionRouter);
 app.use('/skills', skillRouter);
+app.use('/chapter', chapterRouter);
+app.use('/grade', gradeRouter);
+app.use('/program', programRouter);
 
 app.post('/uploads', multipartyMiddleware, (req, res)=>{
     console.log(req.files.upload);

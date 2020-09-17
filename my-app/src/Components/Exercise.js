@@ -23,8 +23,10 @@ function Exercise () {
   const [hint, setHint] = useState (
     [{Hint:""}]
   );
-  const[name, setName]=useState([])
+  const[skillname, setSkillname]=useState([])
+  const[chaptername, setChaptername]=useState([])
   const [currentskill, setCurrentskill] = useState("")
+  const [currentChapter, setCurrentchapter] = useState("")
   const[show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -79,7 +81,7 @@ function Exercise () {
     axios.get('http://localhost:1000/skills')
         .then(response => {
             console.log(response.data)
-            setName(
+            setSkillname(
                  response.data,
             )
 
@@ -87,7 +89,20 @@ function Exercise () {
         .catch(function(error){
             console.log(error);
         })
-},[]);
+  },[]);
+  useEffect(() => {
+    axios.get('http://localhost:1000/chapter')
+        .then(response => {
+            console.log(response.data)
+            setChaptername(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
 
   
 
@@ -122,7 +137,13 @@ function Exercise () {
           
           <div className="menu">
             <label className="label" >Skill Name</label>
-            <Select  onChange={(event) => setCurrentskill(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={name.map((item)=> ({value: item._id, label: item.Name}))}>
+            <Select  onChange={(event) => setCurrentskill(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={skillname.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          <br></br>
+          <div className="menu">
+            <label className="label" >Chapter Name</label>
+            <Select  onChange={(event) => setCurrentchapter(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={chaptername.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
           <br></br>
@@ -242,7 +263,7 @@ function Exercise () {
     <div className="display">
 
       <h3 className="instr-view">Instruction Field View</h3>
-      <label>
+      <label style={{"max-width":"100%"}}>
         <MathJax.Context >
             <MathJax.Text text={parse(text)} />
         </MathJax.Context>

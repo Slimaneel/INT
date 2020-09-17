@@ -4,9 +4,14 @@ let Exercise = require('../Creator/instruction.creator');
 
 
 router.route('/').get((req, res) => {
-    Exercise.find()
+    Exercise.find().populate('skill')
     .then(exercises => res.json(exercises))
     .catch(err => res.status(400).json('Error: ' + err));
+});
+router.route('/:id').get(async(req, res) => {
+    await Exercise.findById(req.params.id).populate('skill')
+   .then(exercise => res.json(exercise))
+   .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
@@ -35,11 +40,7 @@ router.route('/add').post(async(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').get(async(req, res) => {
-     await Exercise.findById(req.params.id).populate('skill')
-    .then(exercise => res.json(exercise))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+
 
 router.route('/:id').delete((req, res) => {
     Exercise.findByIdAndDelete(req.params.id)

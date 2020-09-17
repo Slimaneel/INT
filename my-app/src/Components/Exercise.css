@@ -1,27 +1,22 @@
 .Exercise{
   background:linear-gradient(to top, rgba(32, 32, 32, 0.863) 20%, rgba(168, 168, 165, 0.8) 100%), url("../img/add-bg.jpg");
-   
-   
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
-    width: 100%;
+    width:70%;
     height:100%;
     float: left;
-    
-    
-  
 }
 
 .display{
-    width:50vw;
+    width:48.6vw;
     height:50vw;
     padding:30px 0 0 30px;
     color:black;
     text-align:center;
     min-height: 35rem;
-    max-width:auto;
+    max-width:50%;
     background-color:white;
     
 }
@@ -52,8 +47,8 @@
    
   display: flex;
   flex-wrap: wrap;
-   margin-right: -0.75rem;
-   margin-left: -0.75rem;
+   margin-right: 0rem;
+   margin-left: 0rem;
    
   
  }

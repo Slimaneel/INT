@@ -22,12 +22,14 @@ export default class Nav extends Component{
                     <li className='nav-item'> 
                         <a className='nav-link js-scroll-trigger' href="/exercise">Add Exercise</a>
                     </li>
+                 
                     <li className='nav-item'> 
-                        <a to='/skills' className='nav-link js-scroll-trigger' href="skills">Add skill</a>
+                        <a to='/add' className='nav-link js-scroll-trigger' href="/add">Settings</a>
                     </li>
                  
                     
                 </ul>
+            
             </div>
             </div>
         </nav>

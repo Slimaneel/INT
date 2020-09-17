@@ -26,8 +26,7 @@ function ViewExercise(props) {
     const [click, setClick] = useState(0)
     const [answer, setAnswer] = useState ("")
     const [number, setNumber] = useState(0)
-    const [isLoading, setIsLoading] = useState(true)
-    const [video, setVideo] = useState(true)
+    const[validAnswer, setValidAnswer] = useState("") 
     const [currentSolution, setCurrentsolution] = useState("")
     const[show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -60,21 +59,9 @@ function ViewExercise(props) {
       }, []);
      const CheckAnswer = () => {
        if(latex === answer){
-        setIsLoading(false);
-        store.addNotification({
-        title: "Success",
-        message: "Correct Answer!",
-        type: "success",
-        insert: "top",
-        container: "top-right",
-        dismiss: {
-          duration:2000,
-          onScreen: false
-        }
-
-        })
+        setValidAnswer(answer)
       } else {
-        if(answer ==="") {
+        if(answer === "") {
           store.addNotification({
             title: "Error",
             message: "Write an anwer first!",
@@ -88,7 +75,7 @@ function ViewExercise(props) {
     
             })
         }else{
-        setNumber(number + 1)
+       
         document.getElementById("hint").style.visibility = 'visible';  
         store.addNotification({
           title: "Wrong",
@@ -144,7 +131,7 @@ function ViewExercise(props) {
         }
     
     }
-    const ShowSolution = ()=>{
+    const ShowSolution = () =>{
       
       setCurrentsolution(latex);
     
@@ -152,10 +139,10 @@ function ViewExercise(props) {
       document.getElementById("solution-label").style.visibility = 'visible';
     }
     
-
-    if(number > 2){
+    if(validAnswer === latex && validAnswer !==""){
       return <Result />
     }
+  
  
 
     
@@ -175,7 +162,8 @@ function ViewExercise(props) {
  
            
            
-            <p>      
+            <p>     
+           
                  
               <MathJax.Context>
               
@@ -226,8 +214,8 @@ function ViewExercise(props) {
             </div>
               <ReactNotification />
             
-            <button  type="button"  className="btn btn-primary btn-check"onClick={CheckAnswer}>Check </button> 
-            <FontAwesomeIcon icon="check-square" /> 
+            <button  type="button"  className="btn btn-primary btn-check"onClick={CheckAnswer}> Check <FontAwesomeIcon icon="check" /> </button> 
+            
             
           </div>
 
@@ -256,7 +244,7 @@ function ViewExercise(props) {
          
           <br></br>
           <div className="submit-button">
-            <Link className="btn btn-primary" Link to={'/list'}>Back</Link> 
+            <Link className="btn btn-primary" to={'/list'}>Back</Link> 
           </div>
           
 
@@ -268,7 +256,8 @@ function ViewExercise(props) {
 function Result () {
   return (
     <div>
-      <h1>You run out of trials</h1>
+      <h1>Correct Answer</h1>
+      <FontAwesomeIcon icon="check" />
       <Link className="btn btn-primary" Link to={'/list'}>Try another exercise</Link> 
     </div>
   )

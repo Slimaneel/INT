@@ -1,13 +1,9 @@
+
 .header{
   background-color:rgba(196, 196, 196, 0.377);
-
+    margin-top: -2rem;
+    min-height: 40rem;
     
-    
-    min-height: 35rem;
-    
-   
-   
-  
     
 }
 
@@ -63,6 +59,10 @@ td {
         background-color:#70bec2;
         color:rgb(34, 33, 33);
       }
+      .btnx:hover{
+        text-decoration: none;
+      }
+
 
 
 

@@ -13,7 +13,6 @@ export default class ExerciseList extends Component {
 
     this.state = {
       exercises: [],
-      skills:[],
       count:1
                   
     };
@@ -54,7 +53,7 @@ export default class ExerciseList extends Component {
   render() {
     return (
       <section className="header">
-      <div className="header">
+      <div>
       <br></br>
         <br></br><br></br>
     
@@ -67,6 +66,7 @@ export default class ExerciseList extends Component {
             <tr >
             <th>#</th>
               <th>Title</th>
+              <th>Skill Name</th>
           
               
             
@@ -93,7 +93,7 @@ const Exercise = props => (
     <tr >
       <td>{props.count}</td>
       <td>{props.instruction.Title}</td>
- 
+      <td>{props.instruction.skill.Name}</td>
       
       <td><Link className="btnx" to={'/edit/'+props.instruction._id}>Edit</Link > | <a className="btnx" href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>Delete</a> | <Link className="btnx" to={'/view/'+props.instruction._id}>View</Link></td>
         

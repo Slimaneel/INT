@@ -55,7 +55,7 @@ export default class Skill extends Component {
     .then(res => console.log(res.data));
 
     
-    window.location = "/";
+    window.location = "/skills";
    
 }
 
@@ -99,7 +99,8 @@ export default class Skill extends Component {
 
         <div >
           <input type="submit" value="Add Skill" className="btn-skill btn-skill-primary mr-2" />
-          <button className="btn-skill btn-skill-primary" Link to={'/list'}>Cancel</button> 
+          <Link className="btn-skill btn-skill-primary"  to={'/list'}>Cancel</Link> 
+   
         </div>
       </form>
     </div>
