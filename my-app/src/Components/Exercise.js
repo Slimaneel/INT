@@ -20,19 +20,30 @@ function Exercise () {
   const [value, setValue] = useState ("")
   const [text, setText] = useState("")
   const [latex, setLatex] = useState("");
+  const [mathfieldInput, setMathfieldInput] = useState([]);
   const [hint, setHint] = useState (
     [{Hint:""}]
   );
   const[skillname, setSkillname]=useState([])
+  const[exercises, setExercises]=useState([])
   const[chaptername, setChaptername]=useState([])
+  const[gradename, setGradename]=useState([])
+  const[programname, setProgramname]=useState([])
   const [currentskill, setCurrentskill] = useState("")
-  const [currentChapter, setCurrentchapter] = useState("")
+  const [currentchapter, setCurrentchapter] = useState("")
+  const [currentgrade, setCurrentgrade] = useState("")
+  const [currentprogram, setCurrentprogram] = useState("")
   const[show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const injectMathFunction = (latexString) => {
-    setLatex((latex) => latex + latexString);
+    mathfieldInput.write(latexString);
+  }
+  const initmathInput = (mathField) => {
+    setMathfieldInput(mathField);
+    console.log('mathquillDidMount');
+    console.log('mathfieldInput', mathfieldInput);
   }
 
  
@@ -67,6 +78,9 @@ function Exercise () {
       Hint: hint.filter(hint => hint.Hint),
       Title: value,
       skill: currentskill,
+      chapter:currentchapter,
+      grade:currentgrade,
+      program:currentprogram,
     
     }
     
@@ -75,8 +89,12 @@ function Exercise () {
     axios.post('http://localhost:1000/exercises/add', exercises)
     .then(res => console.log(res.data));
     
-    window.location ="/list";
+    window.location ="/exercise";
   };
+
+  
+
+
   useEffect(() => {
     axios.get('http://localhost:1000/skills')
         .then(response => {
@@ -103,26 +121,53 @@ function Exercise () {
             console.log(error);
         })
   },[]);
+  useEffect(() => {
+    axios.get('http://localhost:1000/grade')
+        .then(response => {
+            console.log(response.data)
+            setGradename(
+                 response.data,
+            )
 
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
+
+  useEffect(() => {
+    axios.get('http://localhost:1000/program')
+        .then(response => {
+            console.log(response.data)
+            setProgramname(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
+ 
   
 
   return (
-    <section className="row" >
+    <section>
     
-      <div className="text-center">
+     
     
     
         
         <form onSubmit={handleSubmit}>
-      
+        <div className="first-part">
    
    
       
         <div >
           <Fragment >
            
-            <label className="label"  >Title</label>
-              <input className="field" type="text"            
+            <label className="label">Title</label>
+              <input style= {{"margin-left":"29.6rem"}} className="field" type="text"            
                   id="title"
                   value={value} 
                   onChange={event => handleChangeTitle(event)}
@@ -134,20 +179,45 @@ function Exercise () {
           </div>
           
           <br></br>
-          
+         <div style={{"display":"flex"}}>
           <div className="menu">
-            <label className="label" >Skill Name</label>
+            <label className="label">Skill Name</label>
             <Select  onChange={(event) => setCurrentskill(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={skillname.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
           <br></br>
           <div className="menu">
             <label className="label" >Chapter Name</label>
-            <Select  onChange={(event) => setCurrentchapter(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={chaptername.map((item)=> ({value: item._id, label: item.Name}))}>
+            <Select  onChange={(event) => setCurrentchapter(event.value) } defaultValue={{label:"Choose Chapter ", value:"choose Skill"}}  options= {chaptername.map((item) => ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          </div>
+          <div style={{"display":"flex"}}>
+          <br></br>
+          <div className="menu">
+            <label className="label" >Grade Name</label>
+            <Select  onChange={(event) => setCurrentgrade(event.value) } defaultValue={{label:"Choose Grade ", value:"choose Skill"}} options={gradename.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
           <br></br>
+          <div className="menu">
+            <label className="label" >Program Name</label>
+            <Select  onChange={(event) => setCurrentprogram(event.value) } defaultValue={{label:"Choose Program ", value:"choose Skill"}} options={programname.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          </div> 
+          </div>
+          
+          
+          <br></br>
+          <hr className="hr3" />
+          <br></br>
+      <div className="row" >
+    
+        <div className="text-center">
+  
       
+        
       <div className="menuz">
         <label className="label">Instruction Field</label>
         <CKEditor 
@@ -181,7 +251,7 @@ function Exercise () {
      
               <EditableMathField  style={{"margin-left":"0.5rem","width":"50%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
                 onClick={()=> handleShow()}
-          
+                mathquillDidMount={initmathInput}
                 latex={latex} // latex value for the input field
                 onChange={(mathField) => {
                   // called everytime the input changes
@@ -189,7 +259,7 @@ function Exercise () {
                 }}
               />
            
-              <Modal style={{"margin-top":"27rem", "width":"50%","margin-left":"3rem", "display":"inline"}} show={show} onHide={handleClose}>
+              <Modal style={{"margin-top":"27rem", "width":"60%","margin-left":"0rem"}} show={show} onHide={handleClose}>
                 <Modal.Body style={{"width":"100%"}}>
                     <button className="button" onClick={() => injectMathFunction("\\sqrt{}")}>√</button>
                     <button className="button" onClick={() => injectMathFunction("\\frac{}{}")}>/</button>
@@ -211,7 +281,6 @@ function Exercise () {
               </Modal>
       
            </div>
-           
               <div>
               <p style={{"color":"#158be8", "font-weight":"600"}} >Check to confirm the solution
               <input 
@@ -256,10 +325,12 @@ function Exercise () {
           <button className="link-button button" onSubmit={handleSubmit}> Submit </button>
           <button style={{"margin-right":"1.5rem"}} className="link-button button" Link to={'/'}>Cancel</button> 
       </div>
+      </div>
+     
       
 
-    </form>
-    </div>
+    
+    
     <div className="display">
 
       <h3 className="instr-view">Instruction Field View</h3>
@@ -272,6 +343,8 @@ function Exercise () {
         
 
     </div>
+    </div>
+    </form>
   </section>
     
   

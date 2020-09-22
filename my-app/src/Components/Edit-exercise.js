@@ -16,19 +16,32 @@ function EditExercise (props) {
  
   const [value, setValue] = useState ("")
   const [text, setText] = useState("")
-  const [latex, setLatex] = useState("");
-  const[name, setName]=useState([])
+  const [latex, setLatex] = useState("")
+  const [mathfieldInput, setMathfieldInput] = useState([])
+  
   const [hint, setHint] = useState ([
       {Hint:""}
   ]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
+  const[skillname, setSkillname]=useState([])
+  const[chaptername, setChaptername]=useState([])
+  const[gradename, setGradename]=useState([])
+  const[programname, setProgramname]=useState([])
   const [currentskill, setCurrentskill] = useState("")
+  const [currentchapter, setCurrentchapter] = useState("")
+  const [currentgrade, setCurrentgrade] = useState("")
+  const [currentprogram, setCurrentprogram] = useState("")
   const[show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const injectMathFunction = (latexString) => {
-    setLatex((latex) => latex + latexString);
+    mathfieldInput.write(latexString);
+  }
+  const initmathInput = (mathField) => {
+    setMathfieldInput(mathField);
+    console.log('mathquillDidMount');
+    console.log('mathfieldInput', mathfieldInput);
   }
 
   const handleChangeHint = (index, event) => {
@@ -61,6 +74,9 @@ function EditExercise (props) {
         setText(response.data.InstructionField)
         setLatex(response.data.Solution)
         setCurrentskill(response.data.skill)
+        setCurrentchapter(response.data.chapter)
+        setCurrentgrade(response.data.grade)
+        setCurrentprogram(response.data.program)
         setHint(response.data.Hint)
         setIsLoading(false);
       })
@@ -70,10 +86,10 @@ function EditExercise (props) {
 
   }, []);
   useEffect(() => {
-    axios.get('http://localhost:1000/skills/Name,_id')
+    axios.get('http://localhost:1000/skills')
         .then(response => {
             console.log(response.data)
-            setName(
+            setSkillname(
                  response.data,
             )
 
@@ -81,7 +97,47 @@ function EditExercise (props) {
         .catch(function(error){
             console.log(error);
         })
-},[]);
+  },[]);
+  useEffect(() => {
+    axios.get('http://localhost:1000/chapter')
+        .then(response => {
+            console.log(response.data)
+            setChaptername(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
+  useEffect(() => {
+    axios.get('http://localhost:1000/grade')
+        .then(response => {
+            console.log(response.data)
+            setGradename(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
+
+  useEffect(() => {
+    axios.get('http://localhost:1000/program')
+        .then(response => {
+            console.log(response.data)
+            setProgramname(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
 
 
 
@@ -93,7 +149,10 @@ function EditExercise (props) {
       InstructionField: text,
       Solution: latex,
       Hint: hint,
-      skill: currentskill
+      skill: currentskill,
+      chapter:currentchapter,
+      grade:currentgrade,
+      program:currentprogram
     }
 
     console.log(exercise);
@@ -108,18 +167,16 @@ function EditExercise (props) {
 
   
     return (
-      <>
-      { isLoading ? <p>Loading...</p> : (
-      <div className="row">
-        <div className="text-center">
+      <section>
+    
       <form onSubmit={handleSubmit}>
-      <div>
-
+      <div className="first-part">
+        <div>
           <Fragment >
 
             <div>
               <label className="label">Title</label>
-              <input  type="text"
+              <input style= {{"margin-left":"29.6rem"}} type="text"
                   className="field"
                   id="title"
                   value={value} 
@@ -130,14 +187,42 @@ function EditExercise (props) {
           </Fragment>
           </div>
           <br></br>
-          
+          <div style={{"display":"flex"}}>
           <div className="menu">
-            <label className="label" >Skill Name</label>
-            <Select  onChange={(event) => setCurrentskill(event.value) } placeholder={currentskill.Name} options={name.map((item)=> ({value: item._id, label: item.Name}))}>
+            <label className="label">Skill Name</label>
+            <Select  onChange={(event) => setCurrentskill(event.value) } placeholder={currentskill.Name} options={skillname.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
           <br></br>
-
+          <div className="menu">
+            <label className="label" >Chapter Name</label>
+            <Select  onChange={(event) => setCurrentchapter(event.value) } placeholder={currentchapter.Name} options={chaptername.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          </div>
+          <div style={{"display":"flex"}}>
+          <br></br>
+          <div className="menu">
+            <label className="label" >Grade Name</label>
+            <Select  onChange={(event) => setCurrentgrade(event.value) } placeholder={currentgrade.Name} options={gradename.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          <br></br>
+          <div className="menu">
+            <label className="label" >Program Name</label>
+            <Select  onChange={(event) => setCurrentprogram(event.value) } placeholder={currentprogram.Name} options={programname.map((item)=> ({value: item._id, label: item.Name}))}>
+            </Select>
+          </div>
+          </div> 
+          </div>
+          
+          
+          <br></br>
+          <hr className="hr3" />
+          <br></br>
+      <div className="row" >
+    
+        <div className="text-center">
          
 
         <div className="menuz">
@@ -162,7 +247,7 @@ function EditExercise (props) {
               <div>
                 <EditableMathField  style={{"margin-left":"0.5rem","width":"50%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
                   onClick={()=> handleShow()}
-            
+                  mathquillDidMount={initmathInput}
                   latex={latex} // latex value for the input field
                   onChange={(mathField) => {
                     // called everytime the input changes
@@ -170,7 +255,7 @@ function EditExercise (props) {
                   }}
                 />
             
-                <Modal style={{"margin-top":"27rem", "width":"50%","margin-left":"3rem", "display":"inline"}} show={show} onHide={handleClose}>
+                <Modal style={{"margin-top":"27rem", "width":"60%"}} show={show} onHide={handleClose}>
                   <Modal.Body style={{"width":"100%"}}>
                       <button className="button" onClick={() => injectMathFunction("\\sqrt{}")}>√</button>
                       <button className="button" onClick={() => injectMathFunction("\\frac{}{}")}>/</button>
@@ -191,7 +276,16 @@ function EditExercise (props) {
                   
                 </Modal>
       
-              </div>
+                </div>
+                <div>
+                  <p style={{"color":"#158be8", "font-weight":"600"}} >Check to confirm the solution
+                    <input 
+                    style={{"margin-left":"0.7rem", "margin-top":"0.7rem"}}
+                      type="checkbox" 
+                    />
+                  </p>
+                  
+                </div>
             </Fragment>
           {hint.map((hints, index) => (
             <Fragment key={`${hints}~${index}`}>
@@ -207,33 +301,33 @@ function EditExercise (props) {
                 />
                   
                 </div>
-                <button type = "button" className="button" onClick={() => handleRemoveHint(index)}> - </button>
+                <button  type = "button" className="button" onClick={() => handleRemoveHint(index)}> - </button>
             </Fragment>
             
           ))}
             
               
-              <button type = "button" className="button " onClick={() => handleAddHint()}> +</button>
+              <button style={{"margin-right":"1.5rem"}} type = "button" className="button " onClick={() => handleAddHint()}>+</button>
             
         <div className="margin">
             <button className="link-button button" onSubmit={handleSubmit}> Submit </button>
-            <button className="link-button button" Link to={'/list'}> Cancel </button> 
+            <button style={{"margin-right":"1.5rem"}} className="link-button button" Link to={'/list'}> Cancel </button> 
         </div>
-  
-      </form>
+     
       </div>
       <div className="display">
 
       <h3 className="instr-view">Instruction field view</h3>
 
-        <label > <MathJax.Context>
+        <label style={{"max-width":"100%"}}> <MathJax.Context>
                 <MathJax.Text text={parse(text)} />
                 </MathJax.Context></label>
         
       </div>
       </div>
-    )}
-    </>
+      </form>
+   
+    </section>
     )
   
 }

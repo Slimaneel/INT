@@ -31,9 +31,14 @@ function ViewExercise(props) {
     const[show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-  
+    const [mathfieldInput, setMathfieldInput] = useState([]);
     const injectMathFunction = (latexString) => {
-      setAnswer((answer) => answer + latexString);
+      mathfieldInput.write(latexString);
+    }
+    const initmathInput = (mathField) => {
+      setMathfieldInput(mathField);
+      console.log('mathquillDidMount');
+      console.log('mathfieldInput', mathfieldInput);
     }
 
   
@@ -182,7 +187,7 @@ function ViewExercise(props) {
      
               <EditableMathField  style={{"margin-left":"0.5rem","width":"20%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
                 onClick={()=> handleShow()}
-          
+                mathquillDidMount={initmathInput}
                 latex={answer} // latex value for the input field
                 onChange={(mathField) => {
                   // called everytime the input changes
@@ -255,9 +260,13 @@ function ViewExercise(props) {
 }
 function Result () {
   return (
+    <div style={{"text-align":"center"}}>
     <div>
       <h1>Correct Answer</h1>
-      <FontAwesomeIcon icon="check" />
+      </div>
+      <div>
+      <FontAwesomeIcon style ={{"width":"500px" }} icon="check" />
+      </div>
       <Link className="btn btn-primary" Link to={'/list'}>Try another exercise</Link> 
     </div>
   )

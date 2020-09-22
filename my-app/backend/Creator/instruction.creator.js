@@ -10,7 +10,17 @@ const instructionSchema = new Schema({
     Hint: { type: Array, required: true},
     skill:{type: mongoose.Schema.Types.ObjectId,
         ref: "Skill",
+    },
+    chapter:{type: mongoose.Schema.Types.ObjectId,
+        ref: "Chapter",
+    },
+    grade:{type: mongoose.Schema.Types.ObjectId,
+        ref: "Grade",
+    },
+    program:{type: mongoose.Schema.Types.ObjectId,
+        ref: "Program",
     }
+
 
 }, {
     

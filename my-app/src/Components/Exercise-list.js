@@ -67,6 +67,9 @@ export default class ExerciseList extends Component {
             <th>#</th>
               <th>Title</th>
               <th>Skill Name</th>
+              <th>Chapter Name</th>
+              <th>Grade Name</th>
+              <th>Program Name</th>
           
               
             
@@ -94,6 +97,9 @@ const Exercise = props => (
       <td>{props.count}</td>
       <td>{props.instruction.Title}</td>
       <td>{props.instruction.skill.Name}</td>
+      <td>{props.instruction.chapter.Name}</td>
+      <td>{props.instruction.grade.Name}</td>
+      <td>{props.instruction.program.Name}</td>
       
       <td><Link className="btnx" to={'/edit/'+props.instruction._id}>Edit</Link > | <a className="btnx" href='#' onClick={() => {props.deleteExercise(props.instruction._id) }}>Delete</a> | <Link className="btnx" to={'/view/'+props.instruction._id}>View</Link></td>
         
