@@ -41,7 +41,7 @@
   }
   
   .input-fields{
-    display: flex;
+    
     flex-direction: column;
     margin-right: 4%;
     

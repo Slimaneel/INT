@@ -64,7 +64,18 @@ function ViewExercise(props) {
       }, []);
      const CheckAnswer = () => {
        if(latex === answer){
-        setValidAnswer(answer)
+        store.addNotification({
+          title: "Correct",
+          message: "Your answer is correct!",
+          type: "success",
+          insert: "top",
+          container: "top-right",
+          dismiss: {
+            duration:2000,
+            onScreen: false
+          }
+  
+          })
       } else {
         if(answer === "") {
           store.addNotification({
@@ -144,9 +155,7 @@ function ViewExercise(props) {
       document.getElementById("solution-label").style.visibility = 'visible';
     }
     
-    if(validAnswer === latex && validAnswer !==""){
-      return <Result />
-    }
+   
   
  
 
@@ -258,20 +267,7 @@ function ViewExercise(props) {
       );
   
 }
-function Result () {
-  return (
-    <div style={{"text-align":"center"}}>
-    <div>
-      <h1>Correct Answer</h1>
-      </div>
-      <div>
-      <FontAwesomeIcon style ={{"width":"500px" }} icon="check" />
-      </div>
-      <Link className="btn btn-primary" Link to={'/list'}>Try another exercise</Link> 
-    </div>
-  )
-  
-}
+
 
 export default ViewExercise;
 

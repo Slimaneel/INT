@@ -22,15 +22,15 @@ function EditExercise (props) {
   const [hint, setHint] = useState ([
       {Hint:""}
   ]);
-  const [isLoading, setIsLoading] = useState(true)
-  const[skillname, setSkillname]=useState([])
-  const[chaptername, setChaptername]=useState([])
-  const[gradename, setGradename]=useState([])
-  const[programname, setProgramname]=useState([])
-  const [currentskill, setCurrentskill] = useState("")
-  const [currentchapter, setCurrentchapter] = useState("")
-  const [currentgrade, setCurrentgrade] = useState("")
-  const [currentprogram, setCurrentprogram] = useState("")
+
+  const[skillname, setSkillname]=useState("")
+  const[chaptername, setChaptername]=useState("")
+  const[gradename, setGradename]=useState("")
+  const[programname, setProgramname]=useState("")
+  const [skills, setSkills] = useState([])
+  const [chapters, setChapters] = useState([])
+  const [grades, setGrades] = useState([])
+  const [programs, setPrograms] = useState([])
   const[show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -73,12 +73,12 @@ function EditExercise (props) {
         setValue(response.data.Title)
         setText(response.data.InstructionField)
         setLatex(response.data.Solution)
-        setCurrentskill(response.data.skill)
-        setCurrentchapter(response.data.chapter)
-        setCurrentgrade(response.data.grade)
-        setCurrentprogram(response.data.program)
+        setSkillname(response.data.skill)
+        setChaptername(response.data.chapter)
+        setGradename(response.data.grade)
+        setProgramname(response.data.program)
         setHint(response.data.Hint)
-        setIsLoading(false);
+       
       })
       .catch(function (error) {
         console.log(error);
@@ -89,7 +89,7 @@ function EditExercise (props) {
     axios.get('http://localhost:1000/skills')
         .then(response => {
             console.log(response.data)
-            setSkillname(
+            setSkills(
                  response.data,
             )
 
@@ -102,7 +102,7 @@ function EditExercise (props) {
     axios.get('http://localhost:1000/chapter')
         .then(response => {
             console.log(response.data)
-            setChaptername(
+            setChapters(
                  response.data,
             )
 
@@ -115,7 +115,7 @@ function EditExercise (props) {
     axios.get('http://localhost:1000/grade')
         .then(response => {
             console.log(response.data)
-            setGradename(
+            setGrades(
                  response.data,
             )
 
@@ -129,7 +129,7 @@ function EditExercise (props) {
     axios.get('http://localhost:1000/program')
         .then(response => {
             console.log(response.data)
-            setProgramname(
+            setPrograms(
                  response.data,
             )
 
@@ -149,10 +149,10 @@ function EditExercise (props) {
       InstructionField: text,
       Solution: latex,
       Hint: hint,
-      skill: currentskill,
-      chapter:currentchapter,
-      grade:currentgrade,
-      program:currentprogram
+      skill: skillname,
+      chapter:chaptername,
+      grade: gradename,
+      program: programname
     }
 
     console.log(exercise);
@@ -189,30 +189,32 @@ function EditExercise (props) {
           <br></br>
           <div style={{"display":"flex"}}>
           <div className="menu">
-            <label className="label">Skill Name</label>
-            <Select  onChange={(event) => setCurrentskill(event.value) } placeholder={currentskill.Name} options={skillname.map((item)=> ({value: item._id, label: item.Name}))}>
+            <label className="label">Program Name</label>
+            <Select onChange={(event) => setProgramname(event.value)} placeholder={programname.Name} options={programs.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
           <br></br>
           <div className="menu">
-            <label className="label" >Chapter Name</label>
-            <Select  onChange={(event) => setCurrentchapter(event.value) } placeholder={currentchapter.Name} options={chaptername.map((item)=> ({value: item._id, label: item.Name}))}>
+            <label className="label">Grade Name</label>
+            <Select onChange={(event) => setGradename(event.value)} placeholder={gradename.Name} options={grades.map((item)=> ({value: item._id, label: item.Name}))}>
             </Select>
           </div>
-          </div>
+         
+          
+          </div> 
           <div style={{"display":"flex"}}>
-          <br></br>
-          <div className="menu">
-            <label className="label" >Grade Name</label>
-            <Select  onChange={(event) => setCurrentgrade(event.value) } placeholder={currentgrade.Name} options={gradename.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
-          <br></br>
-          <div className="menu">
-            <label className="label" >Program Name</label>
-            <Select  onChange={(event) => setCurrentprogram(event.value) } placeholder={currentprogram.Name} options={programname.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
+            <br></br>
+            <div className="menu">
+              <label className="label">Chapter Name</label>
+              <Select onChange={(event) => setChaptername(event.value)} placeholder={chaptername.Name} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}>
+              </Select>
+            </div>
+            <br></br>
+            <div className="menu">
+              <label className="label">Skill Name</label>
+              <Select onChange={(event) => setSkillname(event.value)} placeholder={skillname.Name} options={skills.map((item)=> ({value: item._id, label: item.Name}))}>
+              </Select>
+            </div>
           </div> 
           </div>
           

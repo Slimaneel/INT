@@ -15,6 +15,7 @@ import './Exercise.css';
 
 
 addStyles();
+
 function Exercise () {
   
   const [value, setValue] = useState ("")
@@ -24,19 +25,22 @@ function Exercise () {
   const [hint, setHint] = useState (
     [{Hint:""}]
   );
-  const[skillname, setSkillname]=useState([])
-  const[exercises, setExercises]=useState([])
-  const[chaptername, setChaptername]=useState([])
-  const[gradename, setGradename]=useState([])
-  const[programname, setProgramname]=useState([])
-  const [currentskill, setCurrentskill] = useState("")
-  const [currentchapter, setCurrentchapter] = useState("")
-  const [currentgrade, setCurrentgrade] = useState("")
-  const [currentprogram, setCurrentprogram] = useState("")
+  const[skillname, setSkillname]=useState("")
+  const[chaptername, setChaptername]=useState("")
+  const[gradename, setGradename]=useState("")
+  const[programname, setProgramname]=useState("")
+  const [skills, setSkills] = useState([])
+  const [chapters, setChapters] = useState([])
+  const [grades, setGrades] = useState([])
+  const [grade, setGrade] = useState([])
+  const [programs, setPrograms] = useState([])
+
   const[show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+ 
 
+ 
   const injectMathFunction = (latexString) => {
     mathfieldInput.write(latexString);
   }
@@ -67,6 +71,7 @@ function Exercise () {
     setHint(values);
   };
 
+  
  
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,10 +82,10 @@ function Exercise () {
       Solution: latex,
       Hint: hint.filter(hint => hint.Hint),
       Title: value,
-      skill: currentskill,
-      chapter:currentchapter,
-      grade:currentgrade,
-      program:currentprogram,
+      skill: skillname,
+      chapter: chaptername,
+      grade: gradename,
+      program: programname,
     
     }
     
@@ -96,10 +101,10 @@ function Exercise () {
 
 
   useEffect(() => {
-    axios.get('http://localhost:1000/skills')
+    axios.get('http://localhost:1000/skills',{params: { chapter_id: chaptername} })
         .then(response => {
             console.log(response.data)
-            setSkillname(
+            setSkills(
                  response.data,
             )
 
@@ -107,12 +112,12 @@ function Exercise () {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[chaptername]);
   useEffect(() => {
-    axios.get('http://localhost:1000/chapter')
+    axios.get('http://localhost:1000/chapter',{params: { grade_id: gradename} })
         .then(response => {
             console.log(response.data)
-            setChaptername(
+            setChapters(
                  response.data,
             )
 
@@ -120,12 +125,12 @@ function Exercise () {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[gradename]);
   useEffect(() => {
-    axios.get('http://localhost:1000/grade')
+    axios.get('http://localhost:1000/grade',{params: { program_id: programname} })
         .then(response => {
             console.log(response.data)
-            setGradename(
+            setGrades(
                  response.data,
             )
 
@@ -133,13 +138,13 @@ function Exercise () {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[programname]);
 
   useEffect(() => {
     axios.get('http://localhost:1000/program')
         .then(response => {
             console.log(response.data)
-            setProgramname(
+            setPrograms(
                  response.data,
             )
 
@@ -150,19 +155,14 @@ function Exercise () {
   },[]);
  
   
-
+  
+  
   return (
     <section>
     
-     
-    
-    
-        
         <form onSubmit={handleSubmit}>
         <div className="first-part">
    
-   
-      
         <div >
           <Fragment >
            
@@ -173,40 +173,37 @@ function Exercise () {
                   onChange={event => handleChangeTitle(event)}
               />
   
-           
-  
           </Fragment>
           </div>
           
           <br></br>
-         <div style={{"display":"flex"}}>
-          <div className="menu">
-            <label className="label">Skill Name</label>
-            <Select  onChange={(event) => setCurrentskill(event.value) } defaultValue={{label:"Choose Skill ", value:"choose Skill"}} options={skillname.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
-          <br></br>
-          <div className="menu">
-            <label className="label" >Chapter Name</label>
-            <Select  onChange={(event) => setCurrentchapter(event.value) } defaultValue={{label:"Choose Chapter ", value:"choose Skill"}}  options= {chaptername.map((item) => ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
-          </div>
           <div style={{"display":"flex"}}>
-          <br></br>
-          <div className="menu">
-            <label className="label" >Grade Name</label>
-            <Select  onChange={(event) => setCurrentgrade(event.value) } defaultValue={{label:"Choose Grade ", value:"choose Skill"}} options={gradename.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
-          <br></br>
-          <div className="menu">
-            <label className="label" >Program Name</label>
-            <Select  onChange={(event) => setCurrentprogram(event.value) } defaultValue={{label:"Choose Program ", value:"choose Skill"}} options={programname.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
-          </div>
+            <div className="menu">
+              <label className="label">Program Name</label>
+                <Select onChange={(event) => setProgramname(event.value)} defaultValue={{label:"Choose Program", value:"choose program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}/>
+            </div>
+            <br></br>
+            <div className="menu">
+              <label className="label">Grade Name</label>
+              <Select  onChange={(event) => setGradename(event.value)}  defaultValue={{label:"Choose Grade", value:"choose grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}/>
+            </div>
           </div> 
+          <br></br>
+          <div style={{"display":"flex"}}>
+            <br></br>
+            <div className="menu">
+              <label className="label">Chapter Name</label>
+                <Select  onChange={(event) => setChaptername(event.value)} defaultValue={{label:"Choose Chapter", value:"choose chapter"}} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}/>
+            </div>
+            <br></br>
+            <div className="menu">
+              <label className="label">Skill Name</label>
+                <Select  onChange={(event) => setSkillname(event.value)} defaultValue={{label:"Choose Skill", value:"choose Skill"}} options={skills.map((item)=> ({value: item._id, label: item.Name}))}/>
+            </div>
+           
+            
           </div>
+        </div>
           
           
           <br></br>
@@ -216,8 +213,6 @@ function Exercise () {
     
         <div className="text-center">
   
-      
-        
       <div className="menuz">
         <label className="label">Instruction Field</label>
         <CKEditor 
@@ -241,8 +236,6 @@ function Exercise () {
         </CKEditor >
       </div>
      
-     
-    
           <Fragment >
             <div>
               <label className="label">Solution</label>
@@ -289,14 +282,10 @@ function Exercise () {
               />
               </p>
               
-              
-              
             </div>
           
           </Fragment>
           
-          
-        
         <br></br>
         {hint.map((hints, index) => (
           <Fragment key={`${hints}~${index}`}>
@@ -327,10 +316,6 @@ function Exercise () {
       </div>
       </div>
      
-      
-
-    
-    
     <div className="display">
 
       <h3 className="instr-view">Instruction Field View</h3>
@@ -339,15 +324,11 @@ function Exercise () {
             <MathJax.Text text={parse(text)} />
         </MathJax.Context>
       </label>
-        
-        
-
+       
     </div>
     </div>
     </form>
   </section>
-    
-  
     
   );
 }

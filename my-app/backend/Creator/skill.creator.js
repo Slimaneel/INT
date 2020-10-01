@@ -7,6 +7,9 @@ const skillSchema = new Schema({
     Code: { type: Number, required: true},
     Name: { type: String, required: true},
     Category: { type: String, required: true},
+    chapter:{type: mongoose.Schema.Types.ObjectId,
+        ref: "Chapter",
+    },
   
 }, {
     

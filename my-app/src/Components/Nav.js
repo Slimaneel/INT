@@ -13,7 +13,7 @@ export default class Nav extends Component{
                 MATHSCAN
             </a>
         
-            <div className='collapse navbar-collapse'>
+            <div style={{"margin-left":"20rem"}}className='collapse navbar-collapse'>
             
                 <ul className='navbar-nav '>
                     <li className='nav-item'> 
@@ -25,6 +25,9 @@ export default class Nav extends Component{
                  
                     <li className='nav-item'> 
                         <a to='/add' className='nav-link js-scroll-trigger' href="/add">Settings</a>
+                    </li>
+                    <li className='nav-item'> 
+                        <a to='/contact' className='nav-link js-scroll-trigger' href="/contact">Contact</a>
                     </li>
                  
                     

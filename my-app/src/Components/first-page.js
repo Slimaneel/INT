@@ -11,7 +11,7 @@ class firstPage extends Component {
             <h1 className="text-white-50 my-0 text-uppercase">Mathscan</h1>
             <br></br>
             <h2 className="text-white-40 mx-auto mt-2 mb-5">Your contribution will guide students towards excellence in mathematics</h2>
-        <Link className="btn btn-primary " Link to={'/list'}>Get started</Link> 
+        <Link className="btn " Link to={'/list'}>Get started</Link> 
         </div>
         </div>
         </div>

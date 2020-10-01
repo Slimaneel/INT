@@ -1,34 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState, Fragment, useEffect }from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Select from 'react-select';
 
 
 
-export default class Chapter extends Component {
-  constructor(props) {
-    super(props);
-
-    this.onChangeChapterName = this.onChangeChapterName.bind(this);
+export default function Chapter () {
+  
+  const[chaptername, setChaptername]=useState("")
+  const [gradename, setGradename] = useState("")
+  const [grades, setGrades] = useState([])
+  
  
-    this.state = {
-      Name: "",
-    };
-  }
-
- 
-  onChangeChapterName(event){
-    this.setState({
-      Name: event.target.value
-      })
+  const onChangeChapterName = (event) => {
+    setChaptername(event.target.value)
   }
 
 
- 
-  onSubmit  = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
 
     const chapter = {
-        Name: this.state.Name,
+        Name: chaptername,
+        grade: gradename
     }
 
     console.log(chapter);
@@ -38,22 +32,49 @@ export default class Chapter extends Component {
   
     window.location = "/chapter";
   }   
+  useEffect(() => {
+    axios.get('http://localhost:1000/grade')
+        .then(response => {
+            console.log(response.data)
+            setGrades(
+                 response.data,
+            )
 
-  render() {
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
+
+
     return (
       <body className="body" >
         <div className="wrapper">
             <h3 style={{textAlign:"center"}}>Add Chapter</h3>
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={onSubmit}>
                 <div className="contact-form"> 
                 <div className="input-fields">
-                
+                <div>
+                  <label className="label-fields">Grade Name</label>
+                    <Select  onChange={(event) => setGradename(event.value) } defaultValue={{label:"Choose Grade ", value:"choose Grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}
+                      theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                      >
+                    </Select>
+                </div>
+                <br></br>
                     <label className="label-fields">Chapter Name</label>
                 
                     <input type="text" 
                         className="input"
-                        value={this.state.Name}
-                        onChange={this.onChangeChapterName}
+                        value={chaptername}
+                        onChange={event => onChangeChapterName(event)}
                     />
                 </div>
                 
@@ -67,5 +88,5 @@ export default class Chapter extends Component {
         </div>
       </body>
     )
-  }
+  
 }

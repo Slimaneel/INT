@@ -1,66 +1,85 @@
-import React, { Component } from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Select from 'react-select';
 
 
 
+export default function Grade () {
 
-export default class Grade extends Component {
-  constructor(props) {
-    super(props);
 
-    this.onChangeGradeName = this.onChangeGradeName.bind(this);
+  
+  const[programname, setProgramname]=useState("")
+  const [gradename, setGradename] = useState("")
+  const [programs, setPrograms] = useState([])
  
-    this.state = {
-      Name: "",
-    };
+  const onChangeGradeName = (event) => {
+    setGradename(event.target.value)
   }
+  useEffect(() => {
+    axios.get('http://localhost:1000/program')
+        .then(response => {
+            console.log(response.data)
+            setPrograms(
+                 response.data,
+            )
 
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
  
-  onChangeGradeName(event){
-    this.setState({
-      Name: event.target.value
-      })
-  }
-
-
- 
-  onSubmit  = (event) => {
+  const onSubmit  = (event) => {
     event.preventDefault();
 
-    const grade = {
-        Name: this.state.Name,
+    const gradefield = {
+        Name: gradename,
+        program: programname
     }
 
-    console.log(grade);
+    console.log(gradefield);
     
-    axios.post("http://localhost:1000/grade/add", grade)
+    axios.post("http://localhost:1000/grade/add", gradefield)
     .then(res => console.log(res.data));
   
     window.location = "/grade";
   }   
-
-  render() {
     return (
       <body className="body" >
         <div className="wrapper">
             <h3 style={{textAlign:"center"}}>Add Grade</h3>
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={onSubmit}>
                 <div className="contact-form"> 
                 <div className="input-fields">
-                
+                <div>
+                  <label className="label-fields">Program Name</label>
+                    <Select  onChange={(event) => setProgramname(event.value) } defaultValue={{label:"Choose Program ", value:"choose Program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}
+                      theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                      >
+                    </Select>
+                </div>
+                <br></br>
+
                     <label className="label-fields">Grade Name</label>
                 
                     <input type="text" 
                         className="input"
-                        value={this.state.Name}
-                        onChange={this.onChangeGradeName}
+                        value={gradename}
+                        onChange={event => onChangeGradeName(event)}
                     />
                 </div>
                 
                 </div>
 
-                <div >
+                <div>
                 <input type="submit" value="Add Grade" className="btn-skill btn-skill-primary mr-2" />
                 <Link className="btn-skill btn-skill-primary" to={'/list'}>Cancel</Link> 
                 </div>
@@ -68,5 +87,5 @@ export default class Grade extends Component {
         </div>
       </body>
     )
-  }
+  
 }

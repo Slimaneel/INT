@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 
 const chapterSchema = new Schema({
 
-    Name: { type: String, required: true}
+    Name: { type: String, required: true},
+    grade:{type: mongoose.Schema.Types.ObjectId,
+        ref: "Grade",
+    },
   
 }, {
     

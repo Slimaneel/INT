@@ -13,6 +13,7 @@ import Grade from './Components/grade';
 import Program from './Components/program';
 import ViewExercise from './Components/view-exercise';
 import firstPage from './Components/first-page';
+import Contact from './Components/contact'
 
 
 
@@ -29,6 +30,7 @@ function App() {
   
       <Switch>
         <Route path='/' exact component={firstPage} />
+        <Route path='/contact' exact component={Contact} />
         <Route path='/list' component={ExerciseList} />
         <Route path='/exercise' component={Exercise} />
         <Route path='/edit/:id' component={EditExercise} />

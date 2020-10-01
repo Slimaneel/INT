@@ -2,24 +2,26 @@ const router = require('express').Router();
 let Chapter = require('../Creator/chapter.creator');
 
 router.route('/').get((req, res) => {
-    Chapter.find()
-    .then(chapters => res.json(chapters))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-router.route('/:fields?').get((req, res) => {
-    const {fields} = req.params;
-    const selectFields = fields ? fields.split(",").join(" ") : "";
-    Skill.find().select(selectFields)
-    .then(skills => res.json(skills))
-    .catch(err => res.status(400).json('Error: ' + err));
+    if(req.query.grade_id){
+        Chapter.find({grade: req.query.grade_id})
+        .then(chapters => res.json(chapters))
+        .catch(err => res.status(400).json('Error: '+ err))
+    }else{
+        Chapter.find()
+        .then(chapters => res.json(chapters))
+        .catch(err => res.status(400).json('Error: ' + err));
+    }
 });
 
 
-router.route('/add').post((req, res) => {
+
+router.route('/add').post(async(req, res) => {
     const Name = req.body.Name;
+    const grade = req.body.grade;
     
-    const newChapter = new Chapter({
+    const newChapter = await new Chapter({
         Name,
+        grade,
         
     });
 
@@ -27,8 +29,8 @@ router.route('/add').post((req, res) => {
     .then(() => res.json('chapter added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
-router.route('/:id').get((req, res) => {
-    Chapter.findById(req.params.id)
+router.route('/:id').get(async(req, res) => {
+    await Chapter.findById(req.params.id).populate('grade')
     .then(chapter => res.json(chapter))
     .catch(err => res.status(400).json('Error: ' + err));
 });

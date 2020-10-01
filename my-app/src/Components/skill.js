@@ -1,51 +1,53 @@
-import React, { Component } from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Select from 'react-select';
 import './skill.css';
 
 
 
-export default class Skill extends Component {
-  constructor(props) {
-    super(props);
+export default function Skill () {
 
-    this.onChangeSkillCode = this.onChangeSkillCode.bind(this);
-    this.onChangeSkillName = this.onChangeSkillName.bind(this);
-    this.onChangeSkillCategory = this.onChangeSkillCategory.bind(this);
+  const[chaptername, setChaptername]=useState("")
+  const [skillname, setSkillname] = useState("")
+  const [skillcode, setSkillcode] = useState("")
+  const [skillcategory, setSkillcategory] = useState("")
 
-    this.state = {
-      exercises: "",
-      Code:"",
-      Name: "",
-      Category:""
+  const [chapters, setChapters] = useState([])
 
-    };
+
+  const onChangeSkillCode = (event) => {
+    setSkillcode(event.target.value)
+  }
+  const onChangeSkillName = (event) => {
+    setSkillname(event.target.value)
+  }
+  const onChangeSkillCategory = (event) => {
+    setSkillcategory(event.target.value)
   }
 
-  onChangeSkillCode(event){
-    this.setState({
-      Code: event.target.value
-    })
-  }
-  onChangeSkillName(event){
-    this.setState({
-      Name: event.target.value
-      })
-  }
-  onChangeSkillCategory(event){
-    this.setState({
-      Category: event.target.value
-    })
-  }
+  useEffect(() => {
+    axios.get('http://localhost:1000/chapter')
+        .then(response => {
+            console.log(response.data)
+            setChapters(
+                 response.data,
+            )
 
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);
  
-  onSubmit  = (event) => {
+  const onSubmit  = (event) => {
     event.preventDefault();
 
     const skill = {
-        Code : this.state.Code,
-        Name: this.state.Name,
-        Category: this.state.Category
+        Code : skillcode,
+        Name: skillname,
+        Category: skillcategory,
+        chapter: chaptername
        
     }
 
@@ -59,20 +61,34 @@ export default class Skill extends Component {
    
 }
 
-  render() {
     return (
-      <body className="body" >
+      <body style={{"min-height":"40rem"}} className="body" >
       <div className="wrapper">
       <h3 style={{textAlign:"center"}}>Add Skill</h3>
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={onSubmit}>
         <div className="contact-form"> 
-          <div className="input-fields">
+          <div style={{"width":"280px"}} className="input-fields">
+            <div>
+                <label className="label-fields">Chapter Name</label>
+                  <Select  onChange={(event) => setChaptername(event.value) } defaultValue={{label:"Choose Chapter ", value:"choose Chapter"}} options={chapters.map((item)=> ({value: item._id, label: item.Name}))}
+                      theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                      >
+                  </Select>
+              </div>
+              <br></br>
             <label className="label-fields">Skill Code </label>
             <input type="text"
              
                 className="input"
-                value={this.state.Code}
-                onChange={this.onChangeSkillCode}/>
+                value={skillcode}
+                onChange={event => onChangeSkillCode(event)}/>
               
         
             <label className="label-fields">Skill Name </label>
@@ -80,8 +96,8 @@ export default class Skill extends Component {
             <input type="text"
                 
                 className="input"
-                value={this.state.Name}
-                onChange={this.onChangeSkillName}
+                value={skillname}
+                onChange={event => onChangeSkillName(event)}
                 />
           
           
@@ -90,8 +106,8 @@ export default class Skill extends Component {
             <input 
                 type="text" 
                 className="input"
-                value={this.state.Category}
-                onChange={this.onChangeSkillCategory}
+                value={skillcategory}
+                onChange={event => onChangeSkillCategory(event)}
             />
           </div>
           
@@ -106,6 +122,6 @@ export default class Skill extends Component {
     </div>
     </body>
     )
-  }
+  
 }
 

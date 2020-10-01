@@ -1,0 +1,88 @@
+.bg-div{
+    background: url('../img/map.jpg') no-repeat top center;
+    background-size: cover;
+    
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 35rem;
+}
+.contact{
+   margin-top:3rem;
+   display:block;
+   margin-left:7rem;
+}
+.pad{
+    padding-top:2.75rem;
+    text-align:center;
+    
+
+
+}
+
+.contact-inp{
+    display:block;
+    width:60%;
+    padding-left:1rem;
+    height:35px;
+    border-radius:0.25rem;
+    font-family:"Lato";
+    
+    
+}
+.contact-inp:focus {
+    padding-left:1rem;
+    color:black;
+    font-family:"Lato";
+    border-color:#64a19d;
+    outline:0;
+
+}
+.contact-message{
+    display:block;
+    padding-top:0.4rem;
+    padding-left:1rem;
+    border-radius:0.25rem;
+    font-family:"Lato";
+    margin-left:-17rem;
+    width:480px;
+    height:13.8rem;
+}
+.label-des{
+    color:rgb(184, 184, 184);
+    font-size:18px;
+    
+}
+
+ .message-button {
+   
+    box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+    padding: 0.8rem 1.55rem;
+    font-family: "Lato";
+    font-size:100%;
+    
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
+    border: 0;
+
+    color:white; 
+    background-color: #64a19d;
+    
+  }
+ 
+  .prim-message-button {
+   
+   line-height: 1.5;
+   border-radius: 0.25rem;
+
+ }
+ .prim-message-button {
+   margin-top:1rem;
+   margin-left:34.5rem;
+   
+ }
+ .prim-message-button:hover{
+   background-color:#64a19d;
+    
+   
+ }
