@@ -25,21 +25,18 @@ function ViewExercise(props) {
     const [hint, setHint] = useState ([]);
     const [click, setClick] = useState(0)
     const [answer, setAnswer] = useState ("")
-    const [number, setNumber] = useState(0)
-    const[validAnswer, setValidAnswer] = useState("") 
+   
+    
     const [currentSolution, setCurrentsolution] = useState("")
     const[show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [mathfieldInput, setMathfieldInput] = useState([]);
+    
+
     const injectMathFunction = (latexString) => {
-      mathfieldInput.write(latexString);
+      setAnswer((latex)=> latex + latexString);
     }
-    const initmathInput = (mathField) => {
-      setMathfieldInput(mathField);
-      console.log('mathquillDidMount');
-      console.log('mathfieldInput', mathfieldInput);
-    }
+  
 
   
     
@@ -196,7 +193,7 @@ function ViewExercise(props) {
      
               <EditableMathField  style={{"margin-left":"0.5rem","width":"20%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
                 onClick={()=> handleShow()}
-                mathquillDidMount={initmathInput}
+              
                 latex={answer} // latex value for the input field
                 onChange={(mathField) => {
                   // called everytime the input changes
