@@ -4,15 +4,13 @@ a:hover {
     color: #467370;
     text-decoration: underline;
 }
-.fixedTop {
-overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px; /* Large padding which will shrink on scroll (using JS) */
-  transition: 0.4s; /* Adds a transition effect when the padding is decreased */
-  position: fixed; /* Sticky/fixed navbar */
-  width: 100%;
-  top: 0; /* At the top */
-  z-index: 99;
+.fixedtop {
+
+  position: fixed; 
+  left:0;
+  right:0;
+  top: 0;
+  z-index: 1030;
   }
   
   .container {
@@ -46,7 +44,7 @@ overflow: hidden;
   }
   #mainNav {
     min-height: 3.5rem;
-    background-color: #fff;
+    background-color: #22262a;
   }
 
   .navbar-nav {
@@ -63,19 +61,50 @@ overflow: hidden;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
   }
-  .nav-link {
+  .nav-links {
     display: block;
-    padding: 0.5rem 1rem;
+    padding-top:0.7rem;
+    padding-bottom:0.5rem;
+    padding-left:1rem;
+    outline:none;
+    font-size:1rem;
+    font-weight:300;
+    border-bottom:none;
+    color:  rgb(255, 255, 255);
    
   }
+  .nav-links:hover{
+    color:#64a19d;
+    text-decoration:none;
+  }
+  .nav-links:focus{
+    color:#64a19d;
+  }
+  .nav-links:active{
+    color:#64a19d;
+    
+  }
+  
+  .nav-links:disabled{
+    background-color:#64a19d;
+  }
+  .nav-links.show{
+    background-color:#64a19d;
+  }
+
+  .nav-item:hover{
+    color:#64a19d;
+  }
+  
   .brand {
     display: inline-block;
     margin: 0;
-    line-height: 1em;
-    font-family: "FireGo typeface";
-    
+    line-height: inherit;
+    font-family: "Montserrat","Bodoni MT Condensed";
     font-size: 25px;
-    background: linear-gradient(to right, #000000 50%, #25bd17 50%);
+    letter-spacing:0.095rem;
+    font-weight:400;
+    background-color: #64a19d ;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

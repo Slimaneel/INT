@@ -33,9 +33,15 @@ router.route('/add').post(async(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 router.route('/:id').get(async(req, res) => {
-    await Skill.findById(req.params.id).populate('chapter')
-    .then(skill => res.json(skill))
-    .catch(err => res.status(400).json('Error: ' + err));
+    if(req.query.chapter_id){
+        Skill.find({chapter: req.query.chapter_id})
+        .then(skills => res.json(skills))
+        .catch(err => res.status(400).json('Error: '+ err))
+    }else{
+        await Skill.findById(req.params.id)
+        .then(skill => res.json(skill))
+        .catch(err => res.status(400).json('Error: ' + err));
+    }
 });
 
 

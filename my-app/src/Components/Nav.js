@@ -7,9 +7,9 @@ import './Nav.css';
 export default class Nav extends Component{
     render () {
      return (
-        <nav className='navbar navbar-expand-lg navbar-light fixed top' id="mainNav">
+        <nav className='navbar navbar-expand-lg navbar-dark fixed top' id="mainNav">
             <div className="container">
-            <a class="brand" href="/">
+            <a class="brand js-scroll-trigger" href="/">
                 MATHSCAN
             </a>
         
@@ -17,17 +17,17 @@ export default class Nav extends Component{
             
                 <ul className='navbar-nav '>
                     <li className='nav-item'> 
-                        <a  className='nav-link js-scroll-trigger' href="/list">Home</a>
+                        <a  className='nav-links js-scroll-trigger' href="/list">Home</a>
                     </li>
                     <li className='nav-item'> 
-                        <a className='nav-link js-scroll-trigger' href="/exercise">Add Exercise</a>
+                        <a className='nav-links js-scroll-trigger' href="/exercise">Add Exercise</a>
                     </li>
                  
                     <li className='nav-item'> 
-                        <a to='/add' className='nav-link js-scroll-trigger' href="/add">Settings</a>
+                        <a to='/add' className='nav-links js-scroll-trigger' href="/add">Settings</a>
                     </li>
                     <li className='nav-item'> 
-                        <a to='/contact' className='nav-link js-scroll-trigger' href="/contact">Contact</a>
+                        <a to='/contact' className='nav-links js-scroll-trigger' href="/contact">Contact</a>
                     </li>
                  
                     

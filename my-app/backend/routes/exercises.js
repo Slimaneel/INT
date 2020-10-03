@@ -8,10 +8,12 @@ router.route('/').get((req, res) => {
     .then(exercises => res.json(exercises))
     .catch(err => res.status(400).json('Error: ' + err));
 });
-router.route('/:id').get(async(req, res) => {
-    await Exercise.findById(req.params.id).populate('skill').populate('chapter').populate('grade').populate('program')
-   .then(exercise => res.json(exercise))
-   .catch(err => res.status(400).json('Error: ' + err));
+router.route('/:id').get(async(req, res) => { 
+    
+        await Exercise.findById(req.params.id).populate('skill').populate('chapter').populate('grade').populate('program')
+        .then(exercise => res.json(exercise))
+        .catch(err => res.status(400).json('Error: ' + err));
+    
 });
 
 

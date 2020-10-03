@@ -10,7 +10,8 @@ export default function Chapter () {
   const[chaptername, setChaptername]=useState("")
   const [gradename, setGradename] = useState("")
   const [grades, setGrades] = useState([])
-  
+  const [programname, setProgramname] = useState("")
+  const [programs, setPrograms] = useState([])
  
   const onChangeChapterName = (event) => {
     setChaptername(event.target.value)
@@ -31,9 +32,22 @@ export default function Chapter () {
     .then(res => console.log(res.data));
   
     window.location = "/chapter";
-  }   
+  } 
   useEffect(() => {
-    axios.get('http://localhost:1000/grade')
+    axios.get('http://localhost:1000/program')
+        .then(response => {
+            console.log(response.data)
+            setPrograms(
+                 response.data,
+            )
+
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+  },[]);  
+  useEffect(() => {
+    axios.get('http://localhost:1000/grade',{params: { program_id: programname} })
         .then(response => {
             console.log(response.data)
             setGrades(
@@ -44,7 +58,7 @@ export default function Chapter () {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[programname]);
 
 
     return (
@@ -55,7 +69,20 @@ export default function Chapter () {
                 <div className="contact-form"> 
                 <div className="input-fields">
                 <div>
-                  <label className="label-fields">Grade Name</label>
+                  <label className="label-fields">Program Name</label>
+                    <Select  onChange={(event) => setProgramname(event.value) } defaultValue={{label:"Choose Program ", value:"choose Program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}
+                      theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                      >
+                    </Select>
+                    <br></br>
+                    <label className="label-fields">Grade Name</label>
                     <Select  onChange={(event) => setGradename(event.value) } defaultValue={{label:"Choose Grade ", value:"choose Grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}
                       theme={theme => ({
                         ...theme,

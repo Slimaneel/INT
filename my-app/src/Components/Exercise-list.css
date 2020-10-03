@@ -1,7 +1,7 @@
 
 .header{
-    background-color:#b8bebe;
-    margin-top: -1.5rem;
+    background-color:#22262a;
+    margin-top: -2rem;
     min-height: 40rem;
     
     
@@ -62,7 +62,11 @@ td {
       .btnx:hover{
         text-decoration: none;
       }
-
+.hr1{
+  border-color:rgb(80, 80, 80);
+  border-width:0.03rem;
+  margin-top:-1rem;
+}
 
 
 

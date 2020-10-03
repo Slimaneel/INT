@@ -61,7 +61,7 @@ export default class ExerciseList extends Component {
   
         
         <body > 
-        <table className="table table-hover table-dark ">
+        <table style={{"background-color":"#22262a"}}className="table table-hover table-dark ">
           <thead>
             <tr >
               <th>#</th>
@@ -70,13 +70,18 @@ export default class ExerciseList extends Component {
               <th>Grade Name</th>
               <th>Chapter Name</th>
               <th>Skill Name</th>
+              <th></th>
+              
             </tr>
+            
           </thead>
           <tbody >
             {this.exerciseList()}
           </tbody>
         </table>
+        <hr className="hr1"></hr>
         </body>
+        
       </div>
       </section>
     )

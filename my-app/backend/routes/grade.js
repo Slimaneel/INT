@@ -33,9 +33,15 @@ router.route('/add').post(async(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 router.route('/:id').get(async(req, res) => {
-    await Grade.findById(req.params.id).populate('program')
-    .then(grade => res.json(grade))
-    .catch(err => res.status(400).json('Error: ' + err));
+    if(req.query.program_id){
+        Grade.find({program: req.query.program_id})
+        .then(grades => res.json(grades))
+        .catch(err => res.status(400).json('Error: '+err))
+    }else{
+        await Grade.findById(req.params.id)
+        .then(grade => res.json(grade))
+        .catch(err => res.status(400).json('Error: ' + err));
+    }
 });
 
 

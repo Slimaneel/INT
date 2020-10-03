@@ -30,9 +30,15 @@ router.route('/add').post(async(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 router.route('/:id').get(async(req, res) => {
-    await Chapter.findById(req.params.id).populate('grade')
-    .then(chapter => res.json(chapter))
-    .catch(err => res.status(400).json('Error: ' + err));
+    if(req.query.grade_id){
+        Chapter.find({grade: req.query.grade_id})
+        .then(chapters => res.json(chapters))
+        .catch(err => res.status(400).json('Error: '+ err))
+    }else{
+        await Chapter.findById(req.params.id)
+        .then(chapter => res.json(chapter))
+        .catch(err => res.status(400).json('Error: ' + err));
+    }
 });
 router.route('/:id').delete((req, res) => {
     Chapter.findByIdAndDelete(req.params.id)

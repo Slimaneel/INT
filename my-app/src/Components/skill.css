@@ -9,11 +9,10 @@
   .body{
     background: url('../img/skill-bg.jpg') no-repeat top center;
     background-size: cover;
+    position:relative;
+    min-height:55rem;
     
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: 35rem;
+    
   }
   .wrapper{
     position: absolute;

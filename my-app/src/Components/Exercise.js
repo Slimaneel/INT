@@ -166,7 +166,7 @@ function Exercise () {
         <div >
           <Fragment >
            
-            <label className="label">Title</label>
+            <label style={{"margin-top":"1rem"}}className="label">Title</label>
               <input style= {{"margin-left":"29.6rem"}} className="field" type="text"            
                   id="title"
                   value={value} 
@@ -180,12 +180,30 @@ function Exercise () {
           <div style={{"display":"flex"}}>
             <div className="menu">
               <label className="label">Program Name</label>
-                <Select onChange={(event) => setProgramname(event.value)} defaultValue={{label:"Choose Program", value:"choose program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}/>
+                <Select onChange={(event) => setProgramname(event.value)} defaultValue={{label:"Choose Program", value:"choose program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}
+                  theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                />
             </div>
             <br></br>
             <div className="menu">
               <label className="label">Grade Name</label>
-              <Select  onChange={(event) => setGradename(event.value)}  defaultValue={{label:"Choose Grade", value:"choose grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}/>
+              <Select  onChange={(event) => setGradename(event.value)}  defaultValue={{label:"Choose Grade", value:"choose grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}
+                theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+              />
             </div>
           </div> 
           <br></br>
@@ -193,12 +211,30 @@ function Exercise () {
             <br></br>
             <div className="menu">
               <label className="label">Chapter Name</label>
-                <Select  onChange={(event) => setChaptername(event.value)} defaultValue={{label:"Choose Chapter", value:"choose chapter"}} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}/>
+                <Select  onChange={(event) => setChaptername(event.value)} defaultValue={{label:"Choose Chapter", value:"choose chapter"}} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}
+                  theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                />
             </div>
             <br></br>
             <div className="menu">
               <label className="label">Skill Name</label>
-                <Select  onChange={(event) => setSkillname(event.value)} defaultValue={{label:"Choose Skill", value:"choose Skill"}} options={skills.map((item)=> ({value: item._id, label: item.Name}))}/>
+                <Select  onChange={(event) => setSkillname(event.value)} defaultValue={{label:"Choose Skill", value:"choose Skill"}} options={skills.map((item)=> ({value: item._id, label: item.Name}))}
+                  theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+                />
             </div>
            
             

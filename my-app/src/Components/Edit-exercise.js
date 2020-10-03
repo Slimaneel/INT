@@ -67,7 +67,7 @@ function EditExercise (props) {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:1000/exercises/'+props.match.params.id)
+    axios.get('http://localhost:1000/exercises/'+props.match.params.id )
       .then(response => {
         console.log(response.data)
         setValue(response.data.Title)
@@ -78,7 +78,6 @@ function EditExercise (props) {
         setGradename(response.data.grade)
         setProgramname(response.data.program)
         setHint(response.data.Hint)
-       
       })
       .catch(function (error) {
         console.log(error);
@@ -86,7 +85,7 @@ function EditExercise (props) {
 
   }, []);
   useEffect(() => {
-    axios.get('http://localhost:1000/skills')
+    axios.get('http://localhost:1000/skills',{params: { chapter_id: chaptername} })
         .then(response => {
             console.log(response.data)
             setSkills(
@@ -97,9 +96,9 @@ function EditExercise (props) {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[chaptername]);
   useEffect(() => {
-    axios.get('http://localhost:1000/chapter')
+    axios.get('http://localhost:1000/chapter',{params: { grade_id: gradename} })
         .then(response => {
             console.log(response.data)
             setChapters(
@@ -110,9 +109,9 @@ function EditExercise (props) {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[gradename]);
   useEffect(() => {
-    axios.get('http://localhost:1000/grade')
+    axios.get('http://localhost:1000/grade',{params: { program_id: programname}})
         .then(response => {
             console.log(response.data)
             setGrades(
@@ -123,7 +122,7 @@ function EditExercise (props) {
         .catch(function(error){
             console.log(error);
         })
-  },[]);
+  },[programname]);
 
   useEffect(() => {
     axios.get('http://localhost:1000/program')
@@ -175,7 +174,7 @@ function EditExercise (props) {
           <Fragment >
 
             <div>
-              <label className="label">Title</label>
+              <label style={{"margin-top":"1rem"}} className="label">Title</label>
               <input style= {{"margin-left":"29.6rem"}} type="text"
                   className="field"
                   id="title"
@@ -190,14 +189,32 @@ function EditExercise (props) {
           <div style={{"display":"flex"}}>
           <div className="menu">
             <label className="label">Program Name</label>
-            <Select onChange={(event) => setProgramname(event.value)} placeholder={programname.Name} options={programs.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
+            <Select onChange={(event) => setProgramname(event.value)} defaultValue={{label:"Choose Program", value:"choose program"}} options={programs.map((item)=> ({value: item._id, label: item.Name}))}
+              theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+            />
+           
           </div>
           <br></br>
           <div className="menu">
             <label className="label">Grade Name</label>
-            <Select onChange={(event) => setGradename(event.value)} placeholder={gradename.Name} options={grades.map((item)=> ({value: item._id, label: item.Name}))}>
-            </Select>
+            <Select onChange={(event) => setGradename(event.value)} defaultValue={{label:"Choose Grade", value:"choose Grade"}} options={grades.map((item)=> ({value: item._id, label: item.Name}))}
+              theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+            />
+           
           </div>
          
           
@@ -206,14 +223,32 @@ function EditExercise (props) {
             <br></br>
             <div className="menu">
               <label className="label">Chapter Name</label>
-              <Select onChange={(event) => setChaptername(event.value)} placeholder={chaptername.Name} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}>
-              </Select>
+              <Select onChange={(event) => setChaptername(event.value)} defaultValue={{label:"Choose Chapter", value:"choose Chapter"}} options= {chapters.map((item) => ({value: item._id, label: item.Name}))}
+                theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+              />
+             
             </div>
             <br></br>
             <div className="menu">
               <label className="label">Skill Name</label>
-              <Select onChange={(event) => setSkillname(event.value)} placeholder={skillname.Name} options={skills.map((item)=> ({value: item._id, label: item.Name}))}>
-              </Select>
+              <Select onChange={(event) => setSkillname(event.value)} defaultValue={{label:"Choose Skill", value:"choose Skill"}} options={skills.map((item)=> ({value: item._id, label: item.Name}))}
+                theme={theme => ({
+                        ...theme,
+                        colors:{
+                          ...theme.colors,
+                          primary:'#64a19d',
+
+                        }
+                      })}
+              />
+             
             </div>
           </div> 
           </div>
@@ -247,7 +282,7 @@ function EditExercise (props) {
                 <label className="label" style={{"margin-left":"1rem"}}>Solution</label>
               </div>
               <div>
-                <EditableMathField  style={{"margin-left":"0.5rem","width":"50%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","font-family":"Lato","outline":"none"}} 
+                <EditableMathField  style={{"font-family":"Lato","margin-left":"0.5rem","width":"50%", "border":"none", "border-bottom": "1px solid rgb(26, 25, 25)","outline":"none"}} 
                   onClick={()=> handleShow()}
                   mathquillDidMount={initmathInput}
                   latex={latex} // latex value for the input field
